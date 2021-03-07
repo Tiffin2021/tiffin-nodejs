@@ -17,7 +17,12 @@ export class ShopAccountRepository implements IShopAccountRepository {
   getAll(): Promise<ShopAccount[]> {
     const query = {
       text: `
-        SELECT * FROM shop_accounts
+        SELECT 
+          * 
+        FROM
+          shop_accounts
+        ORDER BY 
+          updated_at DESC
       `,
     };
     return new Promise((resolve, reject) => {
@@ -32,11 +37,15 @@ export class ShopAccountRepository implements IShopAccountRepository {
    * @param  {number} id 店舗アカウントID
    * @returns 店舗アカウント情報
    */
-  get(id: number): Promise<ShopAccount> {
+  getByID(id: number): Promise<ShopAccount> {
     const query = {
       text: `
-        SELECT * FROM shop_accounts
-        WHERE id = $1
+        SELECT
+          *
+        FROM 
+          shop_accounts
+        WHERE 
+          id = $1
       `,
       values: [id],
     };
@@ -55,8 +64,10 @@ export class ShopAccountRepository implements IShopAccountRepository {
   create(shopAccount: ShopAccount): Promise<number> {
     const query = {
       text: `
-        INSERT INTO shop_accounts (email, pass) 
-        VALUES ($1, $2)
+        INSERT INTO 
+          shop_accounts (email, pass) 
+        VALUES 
+          ($1, $2)
         RETURNING id
       `,
       values: [shopAccount.email, shopAccount.pass],
@@ -75,7 +86,25 @@ export class ShopAccountRepository implements IShopAccountRepository {
    * @returns 店舗アカウント情報
    */
   update(id: number, shopAccount: ShopAccount): Promise<ShopAccount> {
-    throw new Error('Method not implemented.');
+    const query = {
+      text: `
+        UPDATE 
+          shop_accounts 
+        SET 
+          email = $1, pass = $2
+        WHERE 
+          id = $3
+      `,
+      values: [shopAccount.email, shopAccount.pass, id],
+    };
+
+    shopAccount.id = id;
+
+    return new Promise((resolve, reject) => {
+      this.connection.query(query, (err: Error, result: QueryResult<ShopAccount>) => {
+        return err ? reject(err) : resolve(shopAccount);
+      });
+    });
   }
 
   /**
@@ -83,6 +112,20 @@ export class ShopAccountRepository implements IShopAccountRepository {
    * @param  {number} id 店舗アカウントID
    */
   delete(id: number): Promise<void> {
-    throw new Error('Method not implemented.');
+    const query = {
+      text: `
+        DELETE FROM 
+          shop_accounts 
+        WHERE 
+          id = $1
+      `,
+      values: [id],
+    };
+
+    return new Promise((resolve, reject) => {
+      this.connection.query(query, (err: Error, result: QueryResult<ShopAccount>) => {
+        return err ? reject(err) : resolve();
+      });
+    });
   }
 }

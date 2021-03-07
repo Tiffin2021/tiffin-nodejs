@@ -13,7 +13,7 @@ export interface IShopAccountRepository {
    * @param  {number} id 店舗アカウントID
    * @returns 店舗アカウント情報
    */
-  get(id: number): Promise<ShopAccount>;
+  getByID(id: number): Promise<ShopAccount>;
 
   /**
    * 店舗アカウント情報を1件作成

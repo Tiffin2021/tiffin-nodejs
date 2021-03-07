@@ -20,7 +20,7 @@ const server = app.listen(4000, () => {
 app.disable('x-powered-by');
 app.use(cors()).use(bodyParser.json());
 
-// Postgres 接続情報
+// postgres 接続情報
 const connection = new Client({
   host: '',
   port: 5432,
@@ -29,7 +29,7 @@ const connection = new Client({
   database: 'tiffin',
 });
 
-// Postgresに接続
+// postgresに接続
 connection
   .connect()
   .then(() => console.log('postgres connect success!'))
