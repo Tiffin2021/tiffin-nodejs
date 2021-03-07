@@ -23,5 +23,6 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 0,
     'quotes': [2, 'single', 'avoid-escape'],
     'semi': [2, 'always'],
+    'object-curly-spacing': ['error', 'always']
   },
 };

@@ -13,7 +13,7 @@ const app = express();
 //expressで4000ポートにサーバー起動
 const server = app.listen(4000, () => {
   const address = server.address() as AddressInfo;
-  console.log("Node.js is listening to PORT:" + address.port);
+  console.log('Node.js is listening to PORT:' + address.port);
 });
 
 //expressの設定(cors method header 許可の設定)
@@ -26,15 +26,15 @@ const connection = new Client({
   user: 'user',
   password: 'password',
   database: 'tiffin'
-})
+});
 
 connection.connect();
 
-app.get("/api/shop_accounts/", async (req: Request, res: Response, next: NextFunction) => {
+app.get('/api/shop_accounts/', async (req: Request, res: Response, next: NextFunction) => {
   //SQL文の生成
   const query = {
     text: 'SELECT * FROM shop_accounts',
-  }
+  };
 
   //Promiseを使ったクエリ操作
   const shopAccounts = await connection.query(query)
@@ -42,7 +42,8 @@ app.get("/api/shop_accounts/", async (req: Request, res: Response, next: NextFun
       console.log(err);
       res.status(500).send(err);
       return;
-    }) as QueryResult
+    }) as QueryResult;
 
   res.json(shopAccounts.rows);
-})
+});
+
