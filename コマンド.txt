@@ -1,0 +1,4 @@
+パッケージのインストール
+npm install --save-dev @types/body-parser @types/cors @types/express @types/pg @types/node ts-node typescript
+ドッカーの起動
+docker-compose up -d
