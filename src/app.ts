@@ -1,9 +1,9 @@
 //必要なimport一覧
-import express from 'express';
+import express, { response } from 'express';
 import { AddressInfo } from 'net';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { Client } from 'pg';
+import { Client, Query, QueryResult } from 'pg';
 import { NextFunction, Request, Response, Router } from 'express';
 
 
@@ -20,10 +20,6 @@ const server = app.listen(4000, () => {
 app.disable('x-powered-by');
 app.use(cors()).use(bodyParser.json());
 
-// app.get("/", (req: Request, res: Response, next: NextFunction) => {
-//   res.json('Hello World');
-// })
-
 const connection = new Client({
   host: '',
   port: 5432,
@@ -34,13 +30,19 @@ const connection = new Client({
 
 connection.connect();
 
-//SQL文の生成
-const query = {
-  text: 'INSERT INTO shop_accounts(email, pass) VALUES($1, $2)',
-  values: ['shop04@gmail.com', 'shop04'],
-}
+app.get("/api/shop_accounts/", async (req: Request, res: Response, next: NextFunction) => {
+  //SQL文の生成
+  const query = {
+    text: 'SELECT * FROM shop_accounts',
+  }
 
-//Promiseを使ったクエリ操作
-connection.query(query)
-  .then(res => console.log(res.rows[0]))
-  .catch(e => console.error(e.stack))
+  //Promiseを使ったクエリ操作
+  const shopAccounts = await connection.query(query)
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+      return;
+    }) as QueryResult
+
+  res.json(shopAccounts.rows);
+})
