@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import { Client } from 'pg';
 import { Request, Response, Router } from 'express';
 import { ShopAccountRepository } from './repository/ShopAccountRepository';
+import { ShopAccountService } from './service/ShopAccountService';
 
 //定義
 const app = express();
@@ -36,9 +37,10 @@ connection
   .catch((err) => console.log(err));
 
 const repository = new ShopAccountRepository(connection);
+const service = new ShopAccountService(repository);
 
 app.get('/api/shop_accounts/', async (req: Request, res: Response) => {
-  const shopAccounts = await repository.getAll().catch((err) => {
+  const shopAccounts = await service.getAll().catch((err) => {
     console.log(err);
     res.status(500).json(err);
     return;
