@@ -7,6 +7,7 @@ import { Client } from 'pg';
 import { Request, Response, Router } from 'express';
 import { ShopAccountRepository } from './repository/ShopAccountRepository';
 import { ShopAccountService } from './service/ShopAccountService';
+import { ShopAccountController } from './controller/ShopAccountController';
 
 //定義
 const app = express();
@@ -38,12 +39,6 @@ connection
 
 const repository = new ShopAccountRepository(connection);
 const service = new ShopAccountService(repository);
+const controller = new ShopAccountController(service);
 
-app.get('/api/shop_accounts/', async (req: Request, res: Response) => {
-  const shopAccounts = await service.getAll().catch((err) => {
-    console.log(err);
-    res.status(500).json(err);
-    return;
-  });
-  res.json(shopAccounts);
-});
+app.use('/api/', controller.router);
