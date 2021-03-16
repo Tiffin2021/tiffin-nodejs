@@ -156,11 +156,12 @@ INSERT INTO stations (prefecture_name, area_name, station_name) VALUES
 
 CREATE TABLE times (
   id SERIAL NOT NULL,
-  time varchar(40) NOT NULL,
+  hour varchar(40) NOT NULL,
+  minutes varchar(40) NOT NULL,
   PRIMARY KEY (id)
 );
 
-INSERT INTO times (time) VALUES
+INSERT INTO times (hour, minutes) VALUES
   ('11', '00'),
   ('11', '30'),
   ('12', '00'),
@@ -170,8 +171,8 @@ INSERT INTO times (time) VALUES
   ('14', '00'),
   ('14', '30'),
   ('15', '00'),
-  ('15', '30')
+  ('15', '30'),
   ('16', '00'),
-  ('16', '30')
-  ('17', '00'),
+  ('16', '30'),
+  ('17', '00')
 ;
