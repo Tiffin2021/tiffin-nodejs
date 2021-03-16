@@ -153,3 +153,25 @@ INSERT INTO stations (prefecture_name, area_name, station_name) VALUES
   ('東京都', '秋葉原・神田・水道橋', '秋葉原'),
   ('東京都', '秋葉原・神田・水道橋', '神田')
 ;
+
+CREATE TABLE times (
+  id SERIAL NOT NULL,
+  time varchar(40) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+INSERT INTO times (time) VALUES
+  ('11', '00'),
+  ('11', '30'),
+  ('12', '00'),
+  ('12', '30'),
+  ('13', '00'),
+  ('13', '30'),
+  ('14', '00'),
+  ('14', '30'),
+  ('15', '00'),
+  ('15', '30')
+  ('16', '00'),
+  ('16', '30')
+  ('17', '00'),
+;
