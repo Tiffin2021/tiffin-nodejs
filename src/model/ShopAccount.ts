@@ -1,5 +1,5 @@
-export type ShopAccount  = {
-    id: number,
-    email: string,
-    pass: string
+export type ShopAccount = {
+  id: number;
+  email: string;
+  pass: string;
 };
