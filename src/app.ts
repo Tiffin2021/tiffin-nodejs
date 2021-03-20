@@ -8,6 +8,10 @@ import { Request, Response, Router } from 'express';
 import { ShopAccountRepository } from './repository/ShopAccountRepository';
 import { ShopAccountService } from './service/ShopAccountService';
 import { ShopAccountController } from './controller/ShopAccountController';
+import { ShopInfoRepository } from './repository/ShopInfoRepository';
+import { ShopInfoService } from './service/ShopInfoService';
+import { ShopInfoController } from './controller/ShopInfoController';
+import { ShopController } from './controller/ShopController';
 
 //定義
 const app = express();
@@ -37,8 +41,14 @@ connection
   .then(() => console.log('postgres connect success!'))
   .catch((err) => console.log(err));
 
-const repository = new ShopAccountRepository(connection);
-const service = new ShopAccountService(repository);
-const controller = new ShopAccountController(service);
+const shopAccountRepository = new ShopAccountRepository(connection);
+const shopInfoRepository = new ShopInfoRepository(connection);
+const shopAccountService = new ShopAccountService(shopAccountRepository);
+const shopInfoService = new ShopInfoService(shopInfoRepository);
+const shopAccountController = new ShopAccountController(shopAccountService);
+const shopInfoController = new ShopInfoController(shopInfoService);
+const shopController = new ShopController(shopAccountService, shopInfoService);
 
-app.use('/api/', controller.router);
+app.use('/api/shop_accounts/', shopAccountController.router);
+app.use('/api/shop_info/', shopInfoController.router);
+app.use('/api/', shopController.router);

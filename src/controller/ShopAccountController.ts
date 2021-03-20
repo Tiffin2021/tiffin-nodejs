@@ -9,7 +9,7 @@ export class ShopAccountController {
     this.router = Router();
     this.service = service;
 
-    this.router.get('/shop_accounts', async (req: Request, res: Response) => {
+    this.router.get('/', async (req: Request, res: Response) => {
       const shopAccounts = await this.service.getAll().catch((err) => {
         console.log(err);
         res.status(500).json(err);
