@@ -39,7 +39,7 @@ INSERT INTO shop_info (shop_accounts_id, name, address, station, tel, opentime, 
 
 -- ----------------------------------------------------------------------
 
--- CREATE TABLE prefecture (
+-- CREATE TABLE prefectures (
 --   id int NOT NULL,
 --   name varchar(255) NOT NULL,
 --   PRIMARY KEY (id)

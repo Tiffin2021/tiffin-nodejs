@@ -14,7 +14,7 @@ export interface IShopInfoRepository {
    * @returns 店舗アカウント情報
    */
   getByID(id: number): Promise<ShopInfo>;
-
+  
   /**
    * 店舗アカウント情報を1件作成
    * @param  {ShopInfo} shopInfo 店舗アカウント情報
