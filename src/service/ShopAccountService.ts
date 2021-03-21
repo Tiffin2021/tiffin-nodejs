@@ -9,18 +9,27 @@ export class ShopAccountService implements IShopAccountService {
     this.repository = repository;
   }
   async getAll(): Promise<ShopAccount[]> {
-    return await this.repository.getAll();
+    const result = await this.repository.getAll();
+    if (result.error != null) return [];
+    if (result.value == null) {
+      return [];
+    }
+    return result.value;
   }
   async getByID(id: number): Promise<ShopAccount> {
-    return await this.repository.getByID(id);
+    const result = await this.repository.getByID(id);
+    return result.value!;
   }
   async create(shopAccount: ShopAccount): Promise<number> {
-    return await this.repository.create(shopAccount);
+    const result = await this.repository.create(shopAccount);
+    return result.value!;
   }
   async update(id: number, shopAccount: ShopAccount): Promise<ShopAccount> {
-    return await this.repository.update(id, shopAccount);
+    const result = await this.repository.update(id, shopAccount);
+    return result.value!;
   }
   async delete(id: number): Promise<void> {
-    return await this.repository.delete(id);
+    const result = await this.repository.delete(id);
+    return result.value!;
   }
 }

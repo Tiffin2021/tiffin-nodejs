@@ -4,10 +4,10 @@ import { AddressInfo } from 'net';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { Client } from 'pg';
-import { Request, Response, Router } from 'express';
 import { ShopAccountRepository } from './repository/ShopAccountRepository';
 import { ShopAccountService } from './service/ShopAccountService';
 import { ShopAccountController } from './controller/ShopAccountController';
+import { Database } from './utils/database/Database';
 
 //定義
 const app = express();
@@ -22,22 +22,24 @@ const server = app.listen(4000, () => {
 app.disable('x-powered-by');
 app.use(cors()).use(bodyParser.json());
 
-// postgres 接続情報
-const connection = new Client({
-  host: '',
-  port: 5432,
-  user: 'user',
-  password: 'password',
-  database: 'tiffin',
-});
+const db = new Database();
 
-// postgresに接続
-connection
-  .connect()
-  .then(() => console.log('postgres connect success!'))
-  .catch((err) => console.log(err));
+// // postgres 接続情報
+// const connection = new Client({
+//   host: '',
+//   port: 5432,
+//   user: 'user',
+//   password: 'password',
+//   database: 'tiffin',
+// });
 
-const repository = new ShopAccountRepository(connection);
+// // postgresに接続
+// connection
+//   .connect()
+//   .then(() => console.log('postgres connect success!'))
+//   .catch((err) => console.log(err));
+
+const repository = new ShopAccountRepository(db);
 const service = new ShopAccountService(repository);
 const controller = new ShopAccountController(service);
 
