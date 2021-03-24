@@ -15,17 +15,17 @@ export class ShopAccountService implements IShopAccountService {
     const result: Result<ShopAccount[]> = {};
 
     // 店舗アカウント情報を取得する
-    const shopAccounts = await this.repository.getAll();
+    const getAllResult = await this.repository.getAll();
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
-    if (shopAccounts.error != null) {
+    if (getAllResult.error != null) {
       result.statusCode = HttpStatusCode.InternalServerError;
-      result.error = shopAccounts.error;
+      result.error = getAllResult.error;
       console.log(result.error);
       return result;
     }
     // エラーは出てないが、中身がnullの場合、500エラーコードとエラー内容を返却
-    if (shopAccounts.value == null) {
+    if (getAllResult.value == null) {
       result.statusCode = HttpStatusCode.InternalServerError;
       result.error = new Error('店舗アカウント情報の取得に失敗しました。');
       console.log(result.error);
@@ -33,7 +33,7 @@ export class ShopAccountService implements IShopAccountService {
     }
 
     // 店舗アカウント情報を結果に詰め込んで返却
-    result.value = shopAccounts.value;
+    result.value = getAllResult.value;
     result.statusCode = HttpStatusCode.OK;
     return result;
   }
@@ -43,17 +43,17 @@ export class ShopAccountService implements IShopAccountService {
     const result: Result<ShopAccount> = {};
 
     // 店舗アカウント情報を取得する
-    const shopAccounts = await this.repository.getByID(id);
+    const getByIDResult = await this.repository.getByID(id);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
-    if (shopAccounts.error != null) {
+    if (getByIDResult.error != null) {
       result.statusCode = HttpStatusCode.InternalServerError;
-      result.error = shopAccounts.error;
+      result.error = getByIDResult.error;
       console.log(result.error);
       return result;
     }
     // エラーは出てないが、中身がnullの場合、500エラーコードとエラー内容を返却
-    if (shopAccounts.value == null) {
+    if (getByIDResult.value == null) {
       result.statusCode = HttpStatusCode.InternalServerError;
       result.error = new Error('店舗アカウント情報の取得に失敗しました。');
       console.log(result.error);
@@ -61,7 +61,7 @@ export class ShopAccountService implements IShopAccountService {
     }
 
     // 店舗アカウント情報を結果に詰め込んで返却
-    result.value = shopAccounts.value;
+    result.value = getByIDResult.value;
     result.statusCode = HttpStatusCode.OK;
     return result;
   }
@@ -69,26 +69,26 @@ export class ShopAccountService implements IShopAccountService {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result<number> = {};
 
-    // 店舗アカウント情報を取得する
-    const shopAccounts = await this.repository.create(shopAccount);
+    // 店舗アカウント情報を作成する
+    const createdResult = await this.repository.create(shopAccount);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
-    if (shopAccounts.error != null) {
+    if (createdResult.error != null) {
       result.statusCode = HttpStatusCode.InternalServerError;
-      result.error = shopAccounts.error;
+      result.error = createdResult.error;
       console.log(result.error);
       return result;
     }
     // エラーは出てないが、中身がnullの場合、500エラーコードとエラー内容を返却
-    if (shopAccounts.value == null) {
+    if (createdResult.value == null) {
       result.statusCode = HttpStatusCode.InternalServerError;
-      result.error = new Error('店舗アカウント情報の取得に失敗しました。');
+      result.error = new Error('店舗アカウントIDの取得に失敗しました。');
       console.log(result.error);
       return result;
     }
 
     // 作成後IDを返却
-    result.value = shopAccounts.value;
+    result.value = createdResult.value;
     result.statusCode = HttpStatusCode.Created;
     return result;
   }
@@ -97,7 +97,7 @@ export class ShopAccountService implements IShopAccountService {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result<ShopAccount> = {};
 
-    // 店舗アカウント情報を取得する
+    // 店舗アカウント情報を更新する
     const shopAccounts = await this.repository.update(id, shopAccount);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
@@ -107,16 +107,9 @@ export class ShopAccountService implements IShopAccountService {
       console.log(result.error);
       return result;
     }
-    // エラーは出てないが、中身がnullの場合、500エラーコードとエラー内容を返却
-    if (shopAccounts.value == null) {
-      result.statusCode = HttpStatusCode.InternalServerError;
-      result.error = new Error('店舗アカウント情報の取得に失敗しました。');
-      console.log(result.error);
-      return result;
-    }
 
     // 更新後のデータを結果に詰めて返却
-    result.value = shopAccounts.value;
+    result.value = shopAccount;
     result.statusCode = HttpStatusCode.OK;
     return result;
   }
@@ -125,20 +118,13 @@ export class ShopAccountService implements IShopAccountService {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result = {};
 
-    // 店舗アカウント情報を取得する
-    const shopAccounts = await this.repository.delete(id);
+    // 店舗アカウント情報を削除する
+    const deleteResult = await this.repository.delete(id);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
-    if (shopAccounts.error != null) {
+    if (deleteResult.error != null) {
       result.statusCode = HttpStatusCode.InternalServerError;
-      result.error = shopAccounts.error;
-      console.log(result.error);
-      return result;
-    }
-    // エラーは出てないが、中身がnullの場合、500エラーコードとエラー内容を返却
-    if (shopAccounts.value == null) {
-      result.statusCode = HttpStatusCode.InternalServerError;
-      result.error = new Error('店舗アカウント情報の取得に失敗しました。');
+      result.error = deleteResult.error;
       console.log(result.error);
       return result;
     }
