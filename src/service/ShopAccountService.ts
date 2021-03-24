@@ -2,6 +2,7 @@ import { ShopAccount } from '../model/ShopAccount';
 import { IShopAccountRepository } from '../repository/interfaces/IShopAccountRepository';
 import { IShopAccountService } from './interfaces/IShopAccountService';
 import { HttpStatusCode } from '../utils/http/HttpStatusCode';
+import { DatabaseErrorMessages } from '../utils/database';
 import { Result } from '../utils/types/Result';
 
 export class ShopAccountService implements IShopAccountService {
@@ -10,6 +11,7 @@ export class ShopAccountService implements IShopAccountService {
   constructor(repository: IShopAccountRepository) {
     this.repository = repository;
   }
+
   async getAll(): Promise<Result<ShopAccount[]>> {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result<ShopAccount[]> = {};
@@ -47,6 +49,13 @@ export class ShopAccountService implements IShopAccountService {
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
     if (getByIDResult.error != null) {
+      // データが1件も取れていないエラーの場合、404ステータスを設定
+      if (getByIDResult.error.message === DatabaseErrorMessages.NoData) {
+        result.statusCode = HttpStatusCode.NotFound;
+        result.error = getByIDResult.error;
+        console.log(result.error);
+        return result;
+      }
       result.statusCode = HttpStatusCode.InternalServerError;
       result.error = getByIDResult.error;
       console.log(result.error);

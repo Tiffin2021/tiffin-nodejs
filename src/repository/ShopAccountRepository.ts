@@ -1,6 +1,6 @@
 import { IShopAccountRepository } from './interfaces/IShopAccountRepository';
 import { ShopAccount } from '../model/ShopAccount';
-import { Database, DatabaseResult } from '../utils/database/Database';
+import { Database, DatabaseResult } from '../utils/database';
 
 // 店舗アカウントテーブルを操作するRepositoryクラスを実装します。
 export class ShopAccountRepository implements IShopAccountRepository {

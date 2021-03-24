@@ -5,12 +5,6 @@ export type DatabaseResult<T extends any = null> = {
   error?: Error;
 };
 
-// type Result<T> = {
-//   result?: T;
-//   statusCode?: number;
-//   error?: Error;
-// };
-
 type DBConfig = {
   host: string;
   port: number;
