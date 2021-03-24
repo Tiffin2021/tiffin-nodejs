@@ -21,6 +21,7 @@ export class ShopAccountService implements IShopAccountService {
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
     if (getAllResult.error != null) {
+      // 複数件取得の場合、1件も取得できなかったときもエラーとはせず、空のレスポンスを返却
       result.statusCode = HttpStatusCode.InternalServerError;
       result.error = getAllResult.error;
       console.log(result.error);
