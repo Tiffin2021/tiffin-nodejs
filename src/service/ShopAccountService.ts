@@ -47,7 +47,7 @@ export class ShopAccountService implements IShopAccountService {
     // 店舗アカウント情報を取得する
     const getByIDResult = await this.repository.getByID(id);
 
-    // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
+    // Repositoryでエラーがあった場合
     if (getByIDResult.error != null) {
       // データが1件も取れていないエラーの場合、404ステータスを設定
       if (getByIDResult.error.message === DatabaseErrorMessages.NoData) {
@@ -56,6 +56,7 @@ export class ShopAccountService implements IShopAccountService {
         console.log(result.error);
         return result;
       }
+      // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
       result.statusCode = HttpStatusCode.InternalServerError;
       result.error = getByIDResult.error;
       console.log(result.error);
