@@ -1,5 +1,5 @@
 export type Result<T extends any = null> = {
-  result?: T;
+  value?: T;
   statusCode?: number;
   error?: Error;
 };

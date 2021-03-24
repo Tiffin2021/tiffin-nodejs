@@ -61,6 +61,10 @@ export class Database {
     await this.connection
       .query<T>(queryTextOrConfig)
       .then((res) => {
+        console.log(res);
+        if (res.rowCount === 0) {
+          result.error = new Error('対象のデータが見つかりませんでした。');
+        }
         result.value = res.rows[0];
       })
       .catch((err: Error) => {
