@@ -1,4 +1,5 @@
 import { Client, QueryConfig } from 'pg';
+import { DatabaseErrorMessages } from '../database';
 
 export type DatabaseResult<T extends any = null> = {
   value?: T;
@@ -57,7 +58,7 @@ export class Database {
       .then((res) => {
         console.log(res);
         if (res.rowCount === 0) {
-          result.error = new Error('対象のデータが見つかりませんでした。');
+          result.error = new Error(DatabaseErrorMessages.NoData);
         }
         result.value = res.rows[0];
       })

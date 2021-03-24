@@ -76,6 +76,7 @@ export class ShopAccountService implements IShopAccountService {
     result.statusCode = HttpStatusCode.OK;
     return result;
   }
+
   async create(shopAccount: ShopAccount): Promise<Result<number>> {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result<number> = {};
