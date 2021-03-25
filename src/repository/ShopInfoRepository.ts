@@ -98,19 +98,18 @@ export class ShopInfoRepository implements IShopInfoRepository {
         UPDATE 
           shop_info
         SET 
-          id = $1, shop_account_id = $2, name = $3, address = $4, station = $5, tel = $6, opentime = $7, closetime = $8, created_at = 0000, updated_at = 0000
+          name = $1, address = $2, station = $3, tel = $4, opentime = $5, closetime = $6
         WHERE 
-          id = $1
+          id = $7
       `,
       values: [
-        shopInfo.id,
-        shopInfo.shop_accounts_id,
         shopInfo.name,
         shopInfo.address,
         shopInfo.station,
         shopInfo.tel,
         shopInfo.opentime,
         shopInfo.closetime,
+        shopInfo.id,
       ],
     };
 
