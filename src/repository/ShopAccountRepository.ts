@@ -1,12 +1,13 @@
 import { IShopAccountRepository } from './interfaces/IShopAccountRepository';
 import { ShopAccount } from '../model/ShopAccount';
 import { Database, DatabaseResult } from '../utils/database';
-import { Repository } from './Repository';
 
 // 店舗アカウントテーブルを操作するRepositoryクラスを実装します。
-export class ShopAccountRepository extends Repository implements IShopAccountRepository {
+export class ShopAccountRepository implements IShopAccountRepository {
+  private database: Database;
+
   constructor(database: Database) {
-    super(database);
+    this.database = database;
   }
 
   /**
@@ -108,4 +109,32 @@ export class ShopAccountRepository extends Repository implements IShopAccountRep
 
     return this.database.delete(query);
   }
+
+  //#region Transaction関連
+
+  /**
+   * Transactionの開始
+   * @returns void
+   */
+  transaction(): void {
+    this.database.transaction();
+  }
+
+  /**
+   * Commit実行（データベースの処理を確定する）
+   * @returns void
+   */
+  commit(): void {
+    this.database.commit();
+  }
+
+  /**
+   * RollBack実行（データベースの処理をなかったコトにする）
+   * @returns void
+   */
+  rollback(): void {
+    this.database.rollback();
+  }
+
+  //#endregion
 }

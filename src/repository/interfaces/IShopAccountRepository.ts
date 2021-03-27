@@ -1,9 +1,8 @@
 import { ShopAccount } from '../../model/ShopAccount';
 import { DatabaseResult } from '../../utils/database/Database';
-import { IRepository } from './IRepository';
 
 // 店舗アカウントテーブルに対する操作の振る舞いを定義します。
-export interface IShopAccountRepository extends IRepository {
+export interface IShopAccountRepository {
   /**
    * 店舗アカウント情報一覧の取得
    * @returns 店舗アカウント情報一覧
@@ -37,4 +36,22 @@ export interface IShopAccountRepository extends IRepository {
    * @param  {number} id 店舗アカウントID
    */
   delete(id: number): Promise<DatabaseResult>;
+
+  /**
+   * Transactionの開始
+   * @returns void
+   */
+  transaction(): void;
+
+  /**
+   * Commit実行（データベースの処理を確定する）
+   * @returns void
+   */
+  commit(): void;
+
+  /**
+   * RollBack実行（データベースの処理をなかったコトにする）
+   * @returns void
+   */
+  rollback(): void;
 }
