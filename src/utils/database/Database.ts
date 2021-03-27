@@ -33,6 +33,18 @@ export class Database {
       .catch((err) => console.log(err));
   }
 
+  public async transaction() {
+    this.connection.query('BEGIN');
+  }
+
+  public async commit() {
+    this.connection.query('COMMIT');
+  }
+
+  public async rollback() {
+    this.connection.query('ROLLBACK');
+  }
+
   public async query<T>(
     queryTextOrConfig: string | QueryConfig<any>
   ): Promise<DatabaseResult<T[]>> {

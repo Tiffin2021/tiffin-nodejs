@@ -1,8 +1,9 @@
 import { ShopAccount } from '../../model/ShopAccount';
 import { DatabaseResult } from '../../utils/database/Database';
+import { IRepository } from './IRepository';
 
 // 店舗アカウントテーブルに対する操作の振る舞いを定義します。
-export interface IShopAccountRepository {
+export interface IShopAccountRepository extends IRepository {
   /**
    * 店舗アカウント情報一覧の取得
    * @returns 店舗アカウント情報一覧
