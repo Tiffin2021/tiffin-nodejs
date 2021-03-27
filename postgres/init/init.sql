@@ -133,13 +133,13 @@ INSERT INTO shop_info (shop_accounts_id, name, address, station, tel, opentime, 
 
 CREATE TABLE stations (
   id SERIAL NOT NULL,
-  prefecture_name varchar(255) NOT NULL,
-  area_name varchar(255) NOT NULL,
-  station_name varchar(255) NOT NULL,
+  prefecture varchar(255) NOT NULL,
+  area varchar(255) NOT NULL,
+  station varchar(255) NOT NULL,
   PRIMARY KEY (id)
 );
 
-INSERT INTO stations (prefecture_name, area_name, station_name) VALUES
+INSERT INTO stations (prefecture, area, station) VALUES
   ('北海道', '札幌市', '札幌'),
   ('北海道', '札幌市', 'すすきの'),
   ('北海道', '旭川・富良野・士別', '旭川'),
@@ -156,23 +156,22 @@ INSERT INTO stations (prefecture_name, area_name, station_name) VALUES
 
 CREATE TABLE times (
   id SERIAL NOT NULL,
-  hour varchar(40) NOT NULL,
-  minutes varchar(40) NOT NULL,
+  time time NOT NULL,
   PRIMARY KEY (id)
 );
 
-INSERT INTO times (hour, minutes) VALUES
-  ('11', '00'),
-  ('11', '30'),
-  ('12', '00'),
-  ('12', '30'),
-  ('13', '00'),
-  ('13', '30'),
-  ('14', '00'),
-  ('14', '30'),
-  ('15', '00'),
-  ('15', '30'),
-  ('16', '00'),
-  ('16', '30'),
-  ('17', '00')
+INSERT INTO times (time) VALUES
+  ('1100'),
+  ('1130'),
+  ('1200'),
+  ('1230'),
+  ('1300'),
+  ('1330'),
+  ('1400'),
+  ('1430'),
+  ('1500'),
+  ('1530'),
+  ('1600'),
+  ('1630'),
+  ('1700')
 ;

@@ -12,6 +12,7 @@ import { ShopInfoRepository } from './repository/ShopInfoRepository';
 import { ShopInfoService } from './service/ShopInfoService';
 import { ShopInfoController } from './controller/ShopInfoController';
 import { ShopController } from './controller/ShopController';
+import { ShopService } from './service/ShopService';
 
 //定義
 const app = express();
@@ -43,12 +44,7 @@ connection
 
 const shopAccountRepository = new ShopAccountRepository(connection);
 const shopInfoRepository = new ShopInfoRepository(connection);
-const shopAccountService = new ShopAccountService(shopAccountRepository);
-const shopInfoService = new ShopInfoService(shopInfoRepository);
-const shopAccountController = new ShopAccountController(shopAccountService);
-const shopInfoController = new ShopInfoController(shopInfoService);
-const shopController = new ShopController(shopAccountService, shopInfoService);
+const shopService = new ShopService(shopAccountRepository, shopInfoRepository);
+const shopController = new ShopController(shopService);
 
-app.use('/api/shop_accounts/', shopAccountController.router);
-app.use('/api/shop_info/', shopInfoController.router);
 app.use('/api/', shopController.router);
