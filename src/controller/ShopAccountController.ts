@@ -17,7 +17,7 @@ export class ShopAccountController {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
-      res.status(HttpStatusCode.OK).json(result.value);
+      res.status(result.statusCode!).json(result.value);
     });
 
     this.router.get('/shop_accounts/:id', async (req: Request, res: Response) => {
@@ -27,7 +27,7 @@ export class ShopAccountController {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
-      res.status(HttpStatusCode.OK).json(result.value);
+      res.status(result.statusCode!).json(result.value);
     });
 
     this.router.post('/shop_accounts', async (req: Request, res: Response) => {
@@ -37,7 +37,7 @@ export class ShopAccountController {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
-      res.status(HttpStatusCode.Created).json(result.value);
+      res.status(result.statusCode!).json(result.value);
     });
 
     this.router.put('/shop_accounts/:id', async (req: Request, res: Response) => {
@@ -48,7 +48,7 @@ export class ShopAccountController {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
-      res.status(HttpStatusCode.OK).send();
+      res.status(result.statusCode!).send();
     });
 
     this.router.delete('/shop_accounts/:id', async (req: Request, res: Response) => {
@@ -58,7 +58,7 @@ export class ShopAccountController {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
-      res.status(HttpStatusCode.NoContent).send();
+      res.status(result.statusCode!).send();
     });
   }
 }
