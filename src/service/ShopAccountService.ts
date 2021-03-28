@@ -41,8 +41,33 @@ export class ShopAccountService implements IShopAccountService {
     return result;
   }
 
-  async getLoginUser(shopAccount: ShopAccount): Promise<ShopAccount> {
-    return await this.repository.getLoginUser(shopAccount);
+  async login(email: string, pass: string): Promise<Result<number>> {
+    // Controllerに返却するための結果オブジェクトを生成
+    const result: Result<number> = {};
+
+    // ログインユーザーを取得する
+    const getLoginUser = await this.repository.getLoginUser(email, pass);
+
+    // Repositoryでエラーがあった場合
+    if (getLoginUser.error != null) {
+      // データが1件も取れていないエラーの場合、403ステータスを設定
+      if (getLoginUser.error.message === DatabaseErrorMessages.NoData) {
+        result.statusCode = HttpStatusCode.Forbidden;
+        result.error = getLoginUser.error;
+        console.log(result.error);
+        return result;
+      }
+      // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
+      result.statusCode = HttpStatusCode.InternalServerError;
+      result.error = getLoginUser.error;
+      console.log(result.error);
+      return result;
+    }
+
+    // 店舗アカウントIDを結果に詰め込んで返却
+    result.value = getLoginUser.value!.id;
+    result.statusCode = HttpStatusCode.OK;
+    return result;
   }
 
   async getByID(id: number): Promise<Result<ShopAccount>> {

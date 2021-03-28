@@ -14,7 +14,7 @@ export interface IShopAccountRepository {
    * @param  {ShopAccount} shopAccount 店舗アカウント
    * @returns 店舗アカウントと一致した
    */
-  getLoginUser(shopAccount: ShopAccount): Promise<ShopAccount>;
+  getLoginUser(email: string, pass: string): Promise<DatabaseResult<ShopAccount>>;
 
   /**
    * 店舗アカウント情報をIDで1件取得

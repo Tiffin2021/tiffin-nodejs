@@ -34,7 +34,7 @@ export class ShopAccountRepository implements IShopAccountRepository {
    * @param  {ShopAccount} shopAccount 店舗アカウント
    * @returns 店舗アカウントと一致した
    */
-  getLoginUser(shopAccount: ShopAccount): Promise<ShopAccount> {
+  getLoginUser(email: string, pass: string): Promise<DatabaseResult<ShopAccount>> {
     const query = {
       text: `
           SELECT
@@ -46,13 +46,9 @@ export class ShopAccountRepository implements IShopAccountRepository {
           AND
             pass = $2          
         `,
-      values: [shopAccount.email, shopAccount.pass],
+      values: [email, pass],
     };
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopAccount>) => {
-        return err ? reject(err) : resolve(result.rows[0]);
-      });
-    });
+    return this.database.queryOne<ShopAccount>(query);
   }
 
   /**

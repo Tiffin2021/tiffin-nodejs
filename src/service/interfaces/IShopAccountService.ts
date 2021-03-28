@@ -4,7 +4,7 @@ import { Result } from '../../utils/types/Result';
 export interface IShopAccountService {
   getAll(): Promise<Result<ShopAccount[]>>;
 
-  getLoginUser(shopAccount: ShopAccount): Promise<ShopAccount>;
+  login(email: string, pass: string): Promise<Result<number>>;
 
   getByID(id: number): Promise<Result<ShopAccount>>;
 
