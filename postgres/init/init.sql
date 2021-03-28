@@ -61,7 +61,7 @@ INSERT INTO stations (prefecture, area, station) VALUES
 
 CREATE TABLE times (
   id SERIAL NOT NULL,
-  time number NOT NULL,
+  time int NOT NULL,
   PRIMARY KEY (id)
 );
 
@@ -95,7 +95,7 @@ INSERT INTO times (time) VALUES
 
 CREATE TABLE budgets (
   id SERIAL NOT NULL,
-  budget number NOT NULL,
+  budget int NOT NULL,
   PRIMARY KEY (id)
 );
 
