@@ -1,20 +1,20 @@
 import { IShopAccountRepository } from './interfaces/IShopAccountRepository';
 import { ShopAccount } from '../model/ShopAccount';
-import { Client, QueryResult } from 'pg';
+import { Database, DatabaseResult } from '../utils/database';
 
 // 店舗アカウントテーブルを操作するRepositoryクラスを実装します。
 export class ShopAccountRepository implements IShopAccountRepository {
-  private connection: Client;
+  private database: Database;
 
-  constructor(connection: Client) {
-    this.connection = connection;
+  constructor(database: Database) {
+    this.database = database;
   }
 
   /**
    * 店舗アカウント情報一覧の取得
    * @returns 店舗アカウント情報一覧
    */
-  getAll(): Promise<ShopAccount[]> {
+  getAll(): Promise<DatabaseResult<ShopAccount[]>> {
     const query = {
       text: `
         SELECT 
@@ -25,11 +25,8 @@ export class ShopAccountRepository implements IShopAccountRepository {
           updated_at DESC
       `,
     };
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopAccount>) => {
-        return err ? reject(err) : resolve(result.rows);
-      });
-    });
+
+    return this.database.query<ShopAccount>(query);
   }
 
   /**
@@ -63,7 +60,7 @@ export class ShopAccountRepository implements IShopAccountRepository {
    * @param  {number} id 店舗アカウントID
    * @returns 店舗アカウント情報
    */
-  getByID(id: number): Promise<ShopAccount> {
+  getByID(id: number): Promise<DatabaseResult<ShopAccount>> {
     const query = {
       text: `
         SELECT
@@ -75,11 +72,8 @@ export class ShopAccountRepository implements IShopAccountRepository {
       `,
       values: [id],
     };
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopAccount>) => {
-        return err ? reject(err) : resolve(result.rows[0]);
-      });
-    });
+
+    return this.database.queryOne<ShopAccount>(query);
   }
 
   /**
@@ -87,7 +81,7 @@ export class ShopAccountRepository implements IShopAccountRepository {
    * @param  {ShopAccount} shopAccount 店舗アカウント情報
    * @returns 店舗アカウントID
    */
-  create(shopAccount: ShopAccount): Promise<number> {
+  create(shopAccount: ShopAccount): Promise<DatabaseResult<number>> {
     const query = {
       text: `
         INSERT INTO 
@@ -98,11 +92,8 @@ export class ShopAccountRepository implements IShopAccountRepository {
       `,
       values: [shopAccount.email, shopAccount.pass],
     };
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopAccount>) => {
-        return err ? reject(err) : resolve(result.rows[0].id);
-      });
-    });
+
+    return this.database.insert(query);
   }
 
   /**
@@ -111,7 +102,7 @@ export class ShopAccountRepository implements IShopAccountRepository {
    * @param  {ShopAccount} shopAccount 店舗アカウント情報
    * @returns 店舗アカウント情報
    */
-  update(id: number, shopAccount: ShopAccount): Promise<ShopAccount> {
+  async update(id: number, shopAccount: ShopAccount): Promise<DatabaseResult> {
     const query = {
       text: `
         UPDATE 
@@ -124,20 +115,14 @@ export class ShopAccountRepository implements IShopAccountRepository {
       values: [shopAccount.email, shopAccount.pass, id],
     };
 
-    shopAccount.id = id;
-
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopAccount>) => {
-        return err ? reject(err) : resolve(shopAccount);
-      });
-    });
+    return this.database.update(query);
   }
 
   /**
    * 店舗アカウント情報を1件削除
    * @param  {number} id 店舗アカウントID
    */
-  delete(id: number): Promise<void> {
+  delete(id: number): Promise<DatabaseResult> {
     const query = {
       text: `
         DELETE FROM 
@@ -148,10 +133,34 @@ export class ShopAccountRepository implements IShopAccountRepository {
       values: [id],
     };
 
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopAccount>) => {
-        return err ? reject(err) : resolve();
-      });
-    });
+    return this.database.delete(query);
   }
+
+  //#region Transaction関連
+
+  /**
+   * Transactionの開始
+   * @returns void
+   */
+  transaction(): void {
+    this.database.transaction();
+  }
+
+  /**
+   * Commit実行（データベースの処理を確定する）
+   * @returns void
+   */
+  commit(): void {
+    this.database.commit();
+  }
+
+  /**
+   * RollBack実行（データベースの処理をなかったコトにする）
+   * @returns void
+   */
+  rollback(): void {
+    this.database.rollback();
+  }
+
+  //#endregion
 }
