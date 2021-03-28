@@ -92,3 +92,22 @@ INSERT INTO times (time) VALUES
   ('1645'),
   ('1700')
 ;
+
+CREATE TABLE budgets (
+  id SERIAL NOT NULL,
+  budget number NOT NULL,
+  PRIMARY KEY (id)
+);
+
+INSERT INTO budgets (budget) VALUES
+  (500),
+  (1000),
+  (1500),
+  (2000),
+  (2500),
+  (3000),
+  (3500),
+  (4000),
+  (4500),
+  (5000)
+;
