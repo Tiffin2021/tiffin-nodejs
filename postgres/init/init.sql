@@ -22,8 +22,8 @@ CREATE TABLE shop_info (
   address varchar(50) NOT NULL,
   station varchar(50) NOT NULL,
   tel varchar(50) NOT NULL,
-  opentime varchar(10) NOT NULL,
-  closetime varchar(10) NOT NULL,
+  opentime int NOT NULL,
+  closetime int NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
   updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
   FOREIGN KEY (shop_accounts_id) REFERENCES shop_accounts(id),
@@ -31,9 +31,9 @@ CREATE TABLE shop_info (
 );
 
 INSERT INTO shop_info (shop_accounts_id, name, address, station, tel, opentime, closetime) VALUES
-(1, 'サンプル店01', '東京都新宿区歌舞伎町1-1-1', '新宿駅', '0120-107-929', '1100', '1700'),
-(2, 'サンプル店02', '東京都千代田区1-1', '半蔵門駅', '0120-828-828', '1100', '1400'),
-(3, 'サンプル店03', '東京都豊島区1-1-1', '池袋駅', '0120-370-009', '1130', '1400')
+(1, 'サンプル店01', '東京都新宿区歌舞伎町1-1-1', '新宿駅', '0120-107-929', 1100, 1700),
+(2, 'サンプル店02', '東京都千代田区1-1', '半蔵門駅', '0120-828-828', 1100, 1400),
+(3, 'サンプル店03', '東京都豊島区1-1-1', '池袋駅', '0120-370-009', 1130, 1400)
 ;
 
 CREATE TABLE stations (
