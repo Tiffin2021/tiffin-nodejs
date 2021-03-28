@@ -4,13 +4,15 @@ import { AddressInfo } from 'net';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { Client } from 'pg';
-import { Request, Response, Router } from 'express';
 import { ShopAccountRepository } from './repository/ShopAccountRepository';
 import { ShopAccountService } from './service/ShopAccountService';
 import { ShopAccountController } from './controller/ShopAccountController';
 import { ShopInfoRepository } from './repository/ShopInfoRepository';
 import { ShopInfoService } from './service/ShopInfoService';
 import { ShopInfoController } from './controller/ShopInfoController';
+import { ShopController } from './controller/ShopController';
+import { ShopService } from './service/ShopService';
+import { Database } from './utils/database/Database';
 
 //定義
 const app = express();
@@ -25,29 +27,33 @@ const server = app.listen(4000, () => {
 app.disable('x-powered-by');
 app.use(cors()).use(bodyParser.json());
 
-// postgres 接続情報
-const connection = new Client({
-  host: '',
-  port: 5432,
-  user: 'user',
-  password: 'password',
-  database: 'tiffin',
-});
+const db = new Database();
 
-// postgresに接続
-connection
-  .connect()
-  .then(() => console.log('postgres connect success!'))
-  .catch((err) => console.log(err));
+// // postgres 接続情報
+// const connection = new Client({
+//   host: '',
+//   port: 5432,
+//   user: 'user',
+//   password: 'password',
+//   database: 'tiffin',
+// });
 
-const shopAccountRepository = new ShopAccountRepository(connection);
+// // postgresに接続
+// connection
+//   .connect()
+//   .then(() => console.log('postgres connect success!'))
+//   .catch((err) => console.log(err));
+
+const shopAccountRepository = new ShopAccountRepository(db);
 const shopAccountService = new ShopAccountService(shopAccountRepository);
 const shopAccountController = new ShopAccountController(shopAccountService);
-
 app.use('/api/', shopAccountController.router);
 
-const shopInfoRepository = new ShopInfoRepository(connection);
+const shopInfoRepository = new ShopInfoRepository(db);
 const shopInfoService = new ShopInfoService(shopInfoRepository);
 const shopInfoController = new ShopInfoController(shopInfoService);
-
 app.use('/api/', shopInfoController.router);
+
+const shopService = new ShopService(shopAccountRepository, shopInfoRepository);
+const shopController = new ShopController(shopService);
+app.use('/api/', shopController.router);

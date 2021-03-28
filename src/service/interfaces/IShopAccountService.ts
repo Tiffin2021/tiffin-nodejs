@@ -1,13 +1,16 @@
 import { ShopAccount } from '../../model/ShopAccount';
+import { Result } from '../../utils/types/Result';
 
 export interface IShopAccountService {
-  getAll(): Promise<ShopAccount[]>;
+  getAll(): Promise<Result<ShopAccount[]>>;
 
-  getByID(id: number): Promise<ShopAccount>;
+  login(email: string, pass: string): Promise<Result<number>>;
 
-  create(shopAccount: ShopAccount): Promise<number>;
+  getByID(id: number): Promise<Result<ShopAccount>>;
 
-  update(id: number, shopAccount: ShopAccount): Promise<ShopAccount>;
+  create(shopAccount: ShopAccount): Promise<Result<number>>;
 
-  delete(id: number): Promise<void>;
+  update(id: number, shopAccount: ShopAccount): Promise<Result<ShopAccount>>;
+
+  delete(id: number): Promise<Result>;
 }
