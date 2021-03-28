@@ -109,7 +109,7 @@ export class ShopInfoRepository implements IShopInfoRepository {
         shopInfo.tel,
         shopInfo.opentime,
         shopInfo.closetime,
-        shopInfo.id,
+        id,
       ],
     };
 
