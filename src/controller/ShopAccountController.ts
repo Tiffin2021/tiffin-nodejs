@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { ShopAccount } from '../model/ShopAccount';
 import { IShopAccountService } from '../service/interfaces/IShopAccountService';
-import { HttpStatusCode } from '../utils/http/HttpStatusCode';
 
 export class ShopAccountController {
   public router: Router;

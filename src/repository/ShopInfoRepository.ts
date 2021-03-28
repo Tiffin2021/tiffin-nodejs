@@ -100,11 +100,11 @@ export class ShopInfoRepository implements IShopInfoRepository {
         shopInfo.tel,
         shopInfo.opentime,
         shopInfo.closetime,
-        shopInfo.id,
+        id,
       ],
     };
 
-    shopInfo.id = id;
+    console.log(shopInfo.name);
 
     return this.database.update(query);
   }
