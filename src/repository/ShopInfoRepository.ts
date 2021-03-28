@@ -1,20 +1,20 @@
 import { IShopInfoRepository } from './interfaces/IShopInfoRepository';
 import { ShopInfo } from '../model/ShopInfo';
-import { Client, QueryResult } from 'pg';
+import { Database, DatabaseResult } from '../utils/database';
 
 // 店舗アカウントテーブルを操作するRepositoryクラスを実装します。
 export class ShopInfoRepository implements IShopInfoRepository {
-  private connection: Client;
+  private database: Database;
 
-  constructor(connection: Client) {
-    this.connection = connection;
+  constructor(database: Database) {
+    this.database = database;
   }
 
   /**
    * 店舗アカウント情報一覧の取得
    * @returns 店舗アカウント情報一覧
    */
-  getAll(): Promise<ShopInfo[]> {
+  getAll(): Promise<DatabaseResult<ShopInfo[]>> {
     const query = {
       text: `
         SELECT 
@@ -25,11 +25,8 @@ export class ShopInfoRepository implements IShopInfoRepository {
           updated_at DESC
       `,
     };
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopInfo>) => {
-        return err ? reject(err) : resolve(result.rows);
-      });
-    });
+
+    return this.database.query<ShopInfo>(query);
   }
 
   /**
@@ -37,7 +34,7 @@ export class ShopInfoRepository implements IShopInfoRepository {
    * @param  {number} id 店舗アカウントID
    * @returns 店舗アカウント情報
    */
-  getByID(id: number): Promise<ShopInfo> {
+  getByID(id: number): Promise<DatabaseResult<ShopInfo>> {
     const query = {
       text: `
         SELECT
@@ -49,11 +46,8 @@ export class ShopInfoRepository implements IShopInfoRepository {
       `,
       values: [id],
     };
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopInfo>) => {
-        return err ? reject(err) : resolve(result.rows[0]);
-      });
-    });
+
+    return this.database.queryOne<ShopInfo>(query);
   }
 
   /**
@@ -61,7 +55,7 @@ export class ShopInfoRepository implements IShopInfoRepository {
    * @param  {ShopInfo} shopInfo 店舗アカウント情報
    * @returns 店舗アカウントID
    */
-  create(shopInfo: ShopInfo): Promise<number> {
+  create(shopInfo: ShopInfo): Promise<DatabaseResult<number>> {
     const query = {
       text: `
         INSERT INTO 
@@ -79,11 +73,8 @@ export class ShopInfoRepository implements IShopInfoRepository {
         shopInfo.closetime,
       ],
     };
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopInfo>) => {
-        return err ? reject(err) : resolve(result.rows[0].id);
-      });
-    });
+
+    return this.database.insert(query);
   }
 
   /**
@@ -92,7 +83,7 @@ export class ShopInfoRepository implements IShopInfoRepository {
    * @param  {ShopInfo} shopInfo 店舗アカウント情報
    * @returns 店舗アカウント情報
    */
-  update(id: number, shopInfo: ShopInfo): Promise<ShopInfo> {
+  update(id: number, shopInfo: ShopInfo): Promise<DatabaseResult> {
     const query = {
       text: `
         UPDATE 
@@ -115,18 +106,14 @@ export class ShopInfoRepository implements IShopInfoRepository {
 
     shopInfo.id = id;
 
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopInfo>) => {
-        return err ? reject(err) : resolve(shopInfo);
-      });
-    });
+    return this.database.update(query);
   }
 
   /**
    * 店舗アカウント情報を1件削除
    * @param  {number} id 店舗アカウントID
    */
-  delete(id: number): Promise<void> {
+  delete(id: number): Promise<DatabaseResult> {
     const query = {
       text: `
         DELETE FROM 
@@ -137,10 +124,6 @@ export class ShopInfoRepository implements IShopInfoRepository {
       values: [id],
     };
 
-    return new Promise((resolve, reject) => {
-      this.connection.query(query, (err: Error, result: QueryResult<ShopInfo>) => {
-        return err ? reject(err) : resolve();
-      });
-    });
+    return this.database.delete(query);
   }
 }
