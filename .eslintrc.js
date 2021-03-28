@@ -9,12 +9,9 @@ module.exports = {
     sourceType: 'module',
     ecmaVersion: 2021,
     tsconfigRootDir: __dirname,
-    project: ['./tsconfig.eslint.json']
+    project: ['./tsconfig.eslint.json'],
   },
-  plugins: [
-    '@typescript-eslint',
-    'eslint-plugin-prettier',
-  ],
+  plugins: ['@typescript-eslint', 'eslint-plugin-prettier'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
