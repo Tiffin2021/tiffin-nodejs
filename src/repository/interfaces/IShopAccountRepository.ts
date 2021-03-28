@@ -9,6 +9,13 @@ export interface IShopAccountRepository {
   getAll(): Promise<ShopAccount[]>;
 
   /**
+   * ログインしたアカウント情報と一致した店舗アカウント情報を取得
+   * @param  {ShopAccount} shopAccount 店舗アカウント
+   * @returns 店舗アカウントと一致した
+   */
+  getLoginUser(shopAccount: ShopAccount): Promise<ShopAccount>;
+
+  /**
    * 店舗アカウント情報をIDで1件取得
    * @param  {number} id 店舗アカウントID
    * @returns 店舗アカウント情報

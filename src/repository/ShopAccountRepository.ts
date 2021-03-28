@@ -33,6 +33,32 @@ export class ShopAccountRepository implements IShopAccountRepository {
   }
 
   /**
+   * ログインしたアカウント情報と一致した店舗アカウント情報を取得
+   * @param  {ShopAccount} shopAccount 店舗アカウント
+   * @returns 店舗アカウントと一致した
+   */
+  getLoginUser(shopAccount: ShopAccount): Promise<ShopAccount> {
+    const query = {
+      text: `
+          SELECT
+            *
+          FROM 
+            shop_accounts
+          WHERE 
+            email = $1
+          AND
+            pass = $2          
+        `,
+      values: [shopAccount.email, shopAccount.pass],
+    };
+    return new Promise((resolve, reject) => {
+      this.connection.query(query, (err: Error, result: QueryResult<ShopAccount>) => {
+        return err ? reject(err) : resolve(result.rows[0]);
+      });
+    });
+  }
+
+  /**
    * 店舗アカウント情報をIDで1件取得
    * @param  {number} id 店舗アカウントID
    * @returns 店舗アカウント情報

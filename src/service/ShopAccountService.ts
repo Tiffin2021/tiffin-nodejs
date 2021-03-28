@@ -11,6 +11,11 @@ export class ShopAccountService implements IShopAccountService {
   async getAll(): Promise<ShopAccount[]> {
     return await this.repository.getAll();
   }
+
+  async getLoginUser(shopAccount: ShopAccount): Promise<ShopAccount> {
+    return await this.repository.getLoginUser(shopAccount);
+  }
+
   async getByID(id: number): Promise<ShopAccount> {
     return await this.repository.getByID(id);
   }

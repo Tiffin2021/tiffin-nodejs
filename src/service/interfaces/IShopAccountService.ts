@@ -3,6 +3,8 @@ import { ShopAccount } from '../../model/ShopAccount';
 export interface IShopAccountService {
   getAll(): Promise<ShopAccount[]>;
 
+  getLoginUser(shopAccount: ShopAccount): Promise<ShopAccount>;
+
   getByID(id: number): Promise<ShopAccount>;
 
   create(shopAccount: ShopAccount): Promise<number>;
