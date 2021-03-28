@@ -12,16 +12,17 @@ export class ShopController {
     this.router = Router();
     this.shopService = shopService;
 
-    //shopAccountを1件を作成する
+    // ShopAccountと紐付いたShopInfoを1件を作成する
     this.router.post('/shop', async (req: Request, res: Response) => {
       const shopAccount: ShopAccount = req.body.shopAccount;
       const shopInfo: ShopInfo = req.body.shopInfo;
-      await this.shopService.create(shopAccount, shopInfo).catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
+
+      const result = await this.shopService.create(shopAccount, shopInfo);
+      if (result.error != null) {
+        res.status(result.statusCode!).json(result.error.message);
         return;
-      });
-      res.status(201);
+      }
+      res.status(result.statusCode!).json(result.value);
     });
   }
 }
