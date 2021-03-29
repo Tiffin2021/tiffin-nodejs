@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: password
       PASSWORD: password123
       POSTGRES_DB: tiffin
-      TZ: "Asia/Tokyo"
+      TZ: 'Asia/Tokyo'
     ports:
       - 5432:5432
     volumes:
@@ -19,14 +19,14 @@ services:
     image: dpage/pgadmin4
     restart: always
     ports:
-      - 8080:80 
+      - 8080:80
     environment:
-      PGADMIN_DEFAULT_EMAIL: user
+      PGADMIN_DEFAULT_EMAIL: user@example.com
       PGADMIN_DEFAULT_PASSWORD: password
     volumes:
       - pgadmin:/var/lib/pgadmin
     depends_on:
-     - postgres
+      - postgres
 
 volumes:
   postgres:

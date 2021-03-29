@@ -59,9 +59,9 @@ export class ShopInfoRepository implements IShopInfoRepository {
     const query = {
       text: `
         INSERT INTO 
-          shop_info (name, address, station, tel, opentime, closetime) 
+          shop_info (name, address, station, tel, opentime, closetime, shop_accounts_id) 
         VALUES 
-          ($1, $2)
+          ($1, $2, $3, $4, $5, $6, $7)
         RETURNING id
       `,
       values: [
@@ -71,6 +71,7 @@ export class ShopInfoRepository implements IShopInfoRepository {
         shopInfo.tel,
         shopInfo.opentime,
         shopInfo.closetime,
+        shopInfo.shop_accounts_id,
       ],
     };
 
