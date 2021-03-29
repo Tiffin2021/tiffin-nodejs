@@ -54,6 +54,7 @@ export class ShopService implements IShopService {
     if (shopInfoCreatedResult.error != null) {
       //店舗情報の登録に失敗し、店舗アカウントのみ登録されてしまうため、アカウントの登録を取り消し
       this.shopAccountRepository.rollback;
+      console.log('rollback');
       result.statusCode = HttpStatusCode.InternalServerError;
       result.error = shopInfoCreatedResult.error;
       console.log(result.error);
@@ -61,6 +62,7 @@ export class ShopService implements IShopService {
     }
     //店舗アカウントと店舗情報ともに登録に成功したため、店舗アカウントの登録を確定させる
     this.shopAccountRepository.commit;
+    console.log('commit');
     // 作成した店舗アカウントIDを返却する。
     result.statusCode = HttpStatusCode.Created;
     result.value = shopAccountID;
