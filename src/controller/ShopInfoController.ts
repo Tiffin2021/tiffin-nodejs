@@ -39,5 +39,15 @@ export class ShopInfoController {
       }
       res.status(result.statusCode!).send();
     });
+
+    this.router.delete('/shop_info/:id', async (req: Request, res: Response) => {
+      const id = parseInt(req.params.id);
+      const result = await this.service.delete(id);
+      if (result.error != null) {
+        res.status(result.statusCode!).json(result.error.message);
+        return;
+      }
+      res.status(result.statusCode!).send();
+    });
   }
 }

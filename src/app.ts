@@ -13,6 +13,9 @@ import { ShopInfoController } from './controller/ShopInfoController';
 import { ShopController } from './controller/ShopController';
 import { ShopService } from './service/ShopService';
 import { Database } from './utils/database/Database';
+import { GenreRepository } from './repository/GenreRepository';
+import { GenreService } from './service/GenreService';
+import { GenreController } from './controller/GenreController';
 
 //定義
 const app = express();
@@ -57,3 +60,8 @@ app.use('/api/', shopInfoController.router);
 const shopService = new ShopService(shopAccountRepository, shopInfoRepository);
 const shopController = new ShopController(shopService);
 app.use('/api/', shopController.router);
+
+const genreRepository = new GenreRepository(db);
+const genreService = new GenreService(genreRepository);
+const genreController = new GenreController(genreService);
+app.use('/api/', genreController.router);
