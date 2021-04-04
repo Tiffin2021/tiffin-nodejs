@@ -20,6 +20,8 @@ CREATE TABLE shop_info (
   shop_accounts_id int NOT NULL,
   name varchar(100) NOT NULL,
   address varchar(50) NOT NULL,
+  prefecture varchar(50) NOT NULL,
+  area varchar(50) NOT NULL,
   station varchar(50) NOT NULL,
   tel varchar(50) NOT NULL,
   opentime int NOT NULL,
@@ -123,3 +125,4 @@ INSERT INTO genres (genre) VALUES
   ('洋食'),
   ('中華')
 ;
+
