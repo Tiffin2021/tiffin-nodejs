@@ -32,10 +32,10 @@ CREATE TABLE shop_info (
   PRIMARY KEY (id)
 );
 
-INSERT INTO shop_info (shop_accounts_id, name, address, station, tel, opentime, closetime) VALUES
-(1, 'サンプル店01', '東京都新宿区歌舞伎町1-1-1', '新宿駅', '0120-107-929', 1100, 1700),
-(2, 'サンプル店02', '東京都千代田区1-1', '半蔵門駅', '0120-828-828', 1100, 1400),
-(3, 'サンプル店03', '東京都豊島区1-1-1', '池袋駅', '0120-370-009', 1130, 1400)
+INSERT INTO shop_info (shop_accounts_id, name, address, prefecture, area, station, tel, opentime, closetime) VALUES
+(1, 'サンプル店01', '東京都新宿区歌舞伎町1-1-1', '東京都', '新宿・代々木・大久保', '新宿駅', '0120-107-929', 1100, 1700),
+(2, 'サンプル店02', '東京都千代田区1-1', '東京都', '新宿・代々木・大久保', '代々木', '0120-828-828', 1100, 1400),
+(3, 'サンプル店03', '東京都豊島区1-1-1', '東京都', '秋葉原・神田・水道橋', '秋葉原', '0120-370-009', 1130, 1400)
 ;
 
 CREATE TABLE stations (
