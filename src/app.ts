@@ -13,11 +13,9 @@ import { ShopInfoController } from './controller/ShopInfoController';
 import { ShopController } from './controller/ShopController';
 import { ShopService } from './service/ShopService';
 import { Database } from './utils/database/Database';
-
 import { GenreRepository } from './repository/GenreRepository';
 import { GenreService } from './service/GenreService';
 import { GenreController } from './controller/GenreController';
-
 import { StationMasterRepository } from './repository/StationMasterRepository';
 import { StationMasterService } from './service/StationMasterService';
 import { StationMasterController } from './controller/StationMasterController';
