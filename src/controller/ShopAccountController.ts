@@ -60,7 +60,7 @@ export class ShopAccountController {
       res.status(result.statusCode!).send();
     });
 
-    this.router.get('/shop_accounts/login', async (req: Request, res: Response) => {
+    this.router.get('/shop_accounts_login', async (req: Request, res: Response) => {
       if (req.query.email == null || req.query.pass == null) {
         res.status(400).send();
         return;
