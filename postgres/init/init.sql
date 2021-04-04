@@ -111,3 +111,15 @@ INSERT INTO budgets (budget) VALUES
   (4500),
   (5000)
 ;
+
+CREATE TABLE genres (
+  id SERIAL NOT NULL,
+  genre varchar(50) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+INSERT INTO genres (genre) VALUES
+  ('和食'),
+  ('洋食'),
+  ('中華')
+;
