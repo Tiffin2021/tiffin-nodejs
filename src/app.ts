@@ -13,9 +13,17 @@ import { ShopInfoController } from './controller/ShopInfoController';
 import { ShopController } from './controller/ShopController';
 import { ShopService } from './service/ShopService';
 import { Database } from './utils/database/Database';
+
 import { GenreRepository } from './repository/GenreRepository';
 import { GenreService } from './service/GenreService';
 import { GenreController } from './controller/GenreController';
+
+import { StationMasterRepository } from './repository/StationMasterRepository';
+import { StationMasterService } from './service/StationMasterService';
+import { StationMasterController } from './controller/StationMasterController';
+import { TimeMasterRepository } from './repository/TimeMasterRepository';
+import { TimeMasterService } from './service/TimeMasterService';
+import { TimeMasterController } from './controller/TimeMasterController';
 
 //定義
 const app = express();
@@ -65,3 +73,15 @@ const genreRepository = new GenreRepository(db);
 const genreService = new GenreService(genreRepository);
 const genreController = new GenreController(genreService);
 app.use('/api/', genreController.router);
+
+//ステーションマスターの取得
+const stationMasterRepository = new StationMasterRepository(db);
+const stationMasterService = new StationMasterService(stationMasterRepository);
+const stationMasterController = new StationMasterController(stationMasterService);
+app.use('/api/', stationMasterController.router);
+
+//タイムマスターの取得
+const timeMasterRepository = new TimeMasterRepository(db);
+const timeMasterService = new TimeMasterService(timeMasterRepository);
+const timeMasterController = new TimeMasterController(timeMasterService);
+app.use('/api/', timeMasterController.router);
