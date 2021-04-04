@@ -61,7 +61,7 @@ export class ShopInfoRepository implements IShopInfoRepository {
         INSERT INTO 
           shop_info (name, address, prefecture, area, station, tel, opentime, closetime, shop_accounts_id) 
         VALUES 
-          ($1, $2, $3, $4, $5, $6, $7)
+          ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         RETURNING id
       `,
       values: [
