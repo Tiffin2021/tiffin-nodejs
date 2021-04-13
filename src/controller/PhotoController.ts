@@ -19,7 +19,7 @@ export class PhotoController {
       res.status(result.statusCode!).json(result.value);
     });
 
-    this.router.get('/photos/:id', async (req: Request, res: Response) => {
+    this.router.get('/photos/shopInfoID/:id', async (req: Request, res: Response) => {
       const id = parseInt(req.params.id);
       const result = await this.service.getByShopInfoID(id);
       if (result.error != null) {
@@ -29,7 +29,7 @@ export class PhotoController {
       res.status(result.statusCode!).json(result.value);
     });
 
-    this.router.get('/photos/select/:id', async (req: Request, res: Response) => {
+    this.router.get('/photos/id/:id', async (req: Request, res: Response) => {
       const id = parseInt(req.params.id);
       const result = await this.service.getByID(id);
       if (result.error != null) {
