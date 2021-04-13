@@ -126,3 +126,31 @@ INSERT INTO genres (genre) VALUES
   ('中華')
 ;
 
+CREATE TABLE photos (
+  id SERIAL NOT NULL,
+  pass varchar(100) NOT NULL,
+  -- base64パターン
+  -- value bytea NOT NULL,
+  genre varchar(50) NOT NULL,
+  prefecture varchar(50) NOT NULL,
+  area varchar(50) NOT NULL,
+  station varchar(50) NOT NULL,
+  price int NOT NULL,
+  menu varchar(50) NOT NULL,
+  opentime int NOT NULL,
+  closetime int NOT NULL,
+  shop_info_id int,
+  created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+  FOREIGN KEY (shop_info_id) REFERENCES shop_info(id),
+  PRIMARY KEY (id)
+);
+
+INSERT INTO photos (pass, genre, prefecture, area, station, price, menu, opentime, closetime, shop_info_id) VALUES
+('testDirectry/1', '和食', '東京都', '新宿・代々木・大久保', '新宿', 550, '鯖の味噌煮定食', 1130, 1400, 1),
+('testDirectry/2', '和食', '東京都', '新宿・代々木・大久保', '大久保', 1000, '寿司', 1130, 1400, 1),
+('testDirectry/3', '和食', '北海道', '札幌市', '札幌', 750, '豚の角煮定食', 1130, 1400, 1),
+('testDirectry/4', '和食', '北海道', '札幌市', '札幌', 700, '焼き魚定食', 1200, 1500, 2),
+('testDirectry/5', '中華', '東京都', '新宿・代々木・大久保', '大久保', 1000, '餃子定食', 1130, 1400, 2),
+('testDirectry/6', '洋食', '東京都', '新宿・代々木・大久保', '大久保', 1000, 'ハンバーグランチ', 1130, 1400, 3)
+;
