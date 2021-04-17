@@ -115,18 +115,18 @@ export class ShopInfoRepository implements IShopInfoRepository {
   }
 
   /**
-   * 店舗アカウント情報を1件削除
+   * 店舗アカウントに紐づいている店舗情報を全件削除
    * @param  {number} id 店舗アカウントID
    */
-  delete(id: number): Promise<DatabaseResult> {
+  delete(shopAccountId: number): Promise<DatabaseResult> {
     const query = {
       text: `
         DELETE FROM 
           shop_info
         WHERE 
-          id = $1
+          shop_accounts_id = $1
       `,
-      values: [id],
+      values: [shopAccountId],
     };
 
     return this.database.delete(query);

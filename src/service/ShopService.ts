@@ -68,6 +68,35 @@ export class ShopService implements IShopService {
     result.value = shopAccountID;
     return result;
   }
+  async delete(shopAccountId: number): Promise<Result> {
+    const result: Result = {};
 
-  
+    this.shopAccountRepository.transaction;
+    console.log('start');
+
+    // 店舗アカウント情報を削除する
+    const shopInfoDeletedResult = await this.shopInfoRepository.delete(shopAccountId);
+    const shopAccountDeletedResult = await this.shopAccountRepository.delete(shopAccountId);
+
+    if (shopInfoDeletedResult.error != null) {
+      result.statusCode = HttpStatusCode.InternalServerError;
+      result.error = shopInfoDeletedResult.error;
+      console.log(result.error);
+      return result;
+    }
+
+    if (shopAccountDeletedResult.error != null) {
+      result.statusCode = HttpStatusCode.InternalServerError;
+      result.error = shopAccountDeletedResult.error;
+      console.log(result.error);
+      return result;
+    }
+
+    this.shopAccountRepository.commit;
+    console.log('commit');
+
+    // 結果のボディは必要ないのでステータスのみ返却
+    result.statusCode = HttpStatusCode.NoContent;
+    return result;
+  }
 }
