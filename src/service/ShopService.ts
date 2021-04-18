@@ -5,17 +5,22 @@ import { IShopInfoRepository } from '../repository/interfaces/IShopInfoRepositor
 import { IShopService } from './interfaces/IShopService';
 import { HttpStatusCode } from '../utils/http/HttpStatusCode';
 import { Result } from '../utils/types/Result';
+import { PhotoRepository } from '../repository/PhotoRepository';
+import { IPhotoRepository } from '../repository/interfaces/IPhotoRepository';
 
 export class ShopService implements IShopService {
   private shopAccountRepository: IShopAccountRepository;
   private shopInfoRepository: IShopInfoRepository;
+  private photoRepository: IPhotoRepository;
 
   constructor(
     shopAccountRepository: IShopAccountRepository,
-    shopInfoRepository: IShopInfoRepository
+    shopInfoRepository: IShopInfoRepository,
+    photoRepository: IPhotoRepository
   ) {
     this.shopAccountRepository = shopAccountRepository;
     this.shopInfoRepository = shopInfoRepository;
+    this.photoRepository = photoRepository;
   }
 
   async create(shopAccount: ShopAccount, shopInfo: ShopInfo): Promise<Result<number>> {
@@ -71,12 +76,30 @@ export class ShopService implements IShopService {
   async delete(shopAccountId: number): Promise<Result> {
     const result: Result = {};
 
-    this.shopAccountRepository.transaction;
-    console.log('start');
+    // this.shopAccountRepository.transaction;
+    // console.log('start');
 
-    // 店舗アカウント情報を削除する
+    // 店舗、アカウント情報を削除する
+    // 写真の削除追加
+
+    const getShopInfo = await this.shopInfoRepository.getByID(shopAccountId);
+    const photoDeletedResult = await this.photoRepository.deleteByShopInfo(getShopInfo.value!.id);
     const shopInfoDeletedResult = await this.shopInfoRepository.delete(shopAccountId);
     const shopAccountDeletedResult = await this.shopAccountRepository.delete(shopAccountId);
+
+    if (getShopInfo.error != null) {
+      result.statusCode = HttpStatusCode.InternalServerError;
+      result.error = getShopInfo.error;
+      console.log(result.error);
+      return result;
+    }
+
+    if (photoDeletedResult.error != null) {
+      result.statusCode = HttpStatusCode.InternalServerError;
+      result.error = photoDeletedResult.error;
+      console.log(result.error);
+      return result;
+    }
 
     if (shopInfoDeletedResult.error != null) {
       result.statusCode = HttpStatusCode.InternalServerError;
@@ -92,8 +115,8 @@ export class ShopService implements IShopService {
       return result;
     }
 
-    this.shopAccountRepository.commit;
-    console.log('commit');
+    // this.shopAccountRepository.commit;
+    // console.log('commit');
 
     // 結果のボディは必要ないのでステータスのみ返却
     result.statusCode = HttpStatusCode.NoContent;

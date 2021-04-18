@@ -155,6 +155,20 @@ export class PhotoRepository implements IPhotoRepository {
     return this.database.delete(query);
   }
 
+  deleteByShopInfo(shopInfoId: number): Promise<DatabaseResult> {
+    const query = {
+      text: `
+        DELETE FROM 
+          photos
+        WHERE 
+          shop_info_id = $1
+      `,
+      values: [shopInfoId],
+    };
+
+    return this.database.delete(query);
+  }
+
   //#region Transaction関連
 
   /**

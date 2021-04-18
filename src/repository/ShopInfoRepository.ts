@@ -42,7 +42,7 @@ export class ShopInfoRepository implements IShopInfoRepository {
         FROM 
           shop_info
         WHERE 
-          id = $1
+          shop_accounts_id = $1
       `,
       values: [id],
     };

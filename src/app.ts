@@ -71,8 +71,14 @@ const shopInfoService = new ShopInfoService(shopInfoRepository);
 const shopInfoController = new ShopInfoController(shopInfoService);
 app.use('/api/', shopInfoController.router);
 
+//画像テーブルの操作
+const photoRepository = new PhotoRepository(db);
+const photoService = new PhotoService(photoRepository);
+const photoController = new PhotoController(photoService);
+app.use('/api/', photoController.router);
+
 //店舗アカウントと店舗情報の両方の操作
-const shopService = new ShopService(shopAccountRepository, shopInfoRepository);
+const shopService = new ShopService(shopAccountRepository, shopInfoRepository, photoRepository);
 const shopController = new ShopController(shopService);
 app.use('/api/', shopController.router);
 
@@ -93,9 +99,3 @@ const timeMasterRepository = new TimeMasterRepository(db);
 const timeMasterService = new TimeMasterService(timeMasterRepository);
 const timeMasterController = new TimeMasterController(timeMasterService);
 app.use('/api/', timeMasterController.router);
-
-//画像テーブルの操作
-const photoRepository = new PhotoRepository(db);
-const photoService = new PhotoService(photoRepository);
-const photoController = new PhotoController(photoService);
-app.use('/api/', photoController.router);

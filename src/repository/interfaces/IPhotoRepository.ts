@@ -43,6 +43,8 @@ export interface IPhotoRepository {
    */
   delete(id: number): Promise<DatabaseResult>;
 
+  deleteByShopInfo(shopInfoId: number): Promise<DatabaseResult>;
+
   /**
    * Transactionの開始
    * @returns void
