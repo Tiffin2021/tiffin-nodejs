@@ -145,10 +145,10 @@ CREATE TABLE photos (
 );
 
 INSERT INTO photos (pass, genre, prefecture, area, station, price, menu, opentime, closetime, shop_info_id) VALUES
-('http://www.tiffinphotos.com.s3-website-ap-northeast-1.amazonaws.com/uploadImage/testDirectory/1.jpg', '和食', '東京都', '新宿・代々木・大久保', '新宿', 550, '鯖の味噌煮定食', 1130, 1400, 1),
-('http://www.tiffinphotos.com.s3-website-ap-northeast-1.amazonaws.com/uploadImage/testDirectory/2.jpg', '和食', '東京都', '新宿・代々木・大久保', '大久保', 1000, '寿司', 1130, 1400, 1),
-('http://www.tiffinphotos.com.s3-website-ap-northeast-1.amazonaws.com/uploadImage/testDirectory/3.jpg', '和食', '北海道', '札幌市', '札幌', 750, '豚の角煮定食', 1130, 1400, 1),
-('http://www.tiffinphotos.com.s3-website-ap-northeast-1.amazonaws.com/uploadImage/testDirectory/4.jpg', '和食', '北海道', '札幌市', '札幌', 700, '焼き魚定食', 1200, 1500, 2),
-('http://www.tiffinphotos.com.s3-website-ap-northeast-1.amazonaws.com/uploadImage/testDirectory/5.jpg', '中華', '東京都', '新宿・代々木・大久保', '大久保', 1000, '餃子定食', 1130, 1400, 2),
-('http://www.tiffinphotos.com.s3-website-ap-northeast-1.amazonaws.com/uploadImage/testDirectory/6.jpg', '洋食', '東京都', '新宿・代々木・大久保', '大久保', 1000, 'ハンバーグランチ', 1130, 1400, 3)
+('http://localhost:4000/images/testDirectory/1.jpg', '和食', '東京都', '新宿・代々木・大久保', '新宿', 550, '鯖の味噌煮定食', 1130, 1400, 1),
+('http://localhost:4000/images/testDirectory/2.jpg', '和食', '東京都', '新宿・代々木・大久保', '大久保', 1000, '寿司', 1130, 1400, 1),
+('http://localhost:4000/images/testDirectory/3.jpg', '和食', '北海道', '札幌市', '札幌', 750, '豚の角煮定食', 1130, 1400, 1),
+('localhost:4000/images/testDirectory/4.jpg', '和食', '北海道', '札幌市', '札幌', 700, '焼き魚定食', 1200, 1500, 2),
+('http://localhost:4000/images/testDirectory/5.jpg', '中華', '東京都', '新宿・代々木・大久保', '大久保', 1000, '餃子定食', 1130, 1400, 2),
+('http://localhost:4000/images/testDirectory/6.jpg', '洋食', '東京都', '新宿・代々木・大久保', '大久保', 1000, 'ハンバーグランチ', 1130, 1400, 3)
 ;
