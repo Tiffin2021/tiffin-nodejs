@@ -24,5 +24,15 @@ export class ShopController {
       }
       res.status(result.statusCode!).json(result.value);
     });
+
+    this.router.delete('/shop/:id', async (req: Request, res: Response) => {
+      const shopAccountId = parseInt(req.params.id);
+      const result = await this.shopService.delete(shopAccountId);
+      if (result.error != null) {
+        res.status(result.statusCode!).json(result.error.message);
+        return;
+      }
+      res.status(result.statusCode!).send();
+    });
   }
 }
