@@ -56,6 +56,9 @@ const db = new Database();
 //   .then(() => console.log('postgres connect success!'))
 //   .catch((err) => console.log(err));
 
+// staticにアクセスできるディレクトリ
+app.use(express.static(__dirname + '/public'));
+
 //店舗アカウントの操作
 const shopAccountRepository = new ShopAccountRepository(db);
 const shopAccountService = new ShopAccountService(shopAccountRepository);
