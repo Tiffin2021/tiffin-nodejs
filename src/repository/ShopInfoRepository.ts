@@ -30,11 +30,11 @@ export class ShopInfoRepository implements IShopInfoRepository {
   }
 
   /**
-   * 店舗アカウント情報をIDで1件取得
-   * @param  {number} id 店舗アカウントID
-   * @returns 店舗アカウント情報
+   * 店舗情報を店舗アカウントIDで1件取得
+   * @param  {number} shopAccountId 店舗アカウントID
+   * @returns 店舗情報
    */
-  getByID(id: number): Promise<DatabaseResult<ShopInfo>> {
+  getByID(shopAccountId: number): Promise<DatabaseResult<ShopInfo>> {
     const query = {
       text: `
         SELECT
@@ -44,7 +44,7 @@ export class ShopInfoRepository implements IShopInfoRepository {
         WHERE 
           shop_accounts_id = $1
       `,
-      values: [id],
+      values: [shopAccountId],
     };
 
     return this.database.queryOne<ShopInfo>(query);

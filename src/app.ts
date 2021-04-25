@@ -73,7 +73,7 @@ app.use('/api/', shopInfoController.router);
 
 //画像テーブルの操作
 const photoRepository = new PhotoRepository(db);
-const photoService = new PhotoService(photoRepository);
+const photoService = new PhotoService(photoRepository, shopInfoRepository);
 const photoController = new PhotoController(photoService);
 app.use('/api/', photoController.router);
 
