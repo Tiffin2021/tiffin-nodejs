@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { Photo } from '../model/Photo';
 import { IPhotoService } from '../service/interfaces/IPhotoService';
+import * as fs from 'fs';
 
 export class PhotoController {
   public router: Router;
@@ -46,6 +47,9 @@ export class PhotoController {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
+      //ファイルの書き込みwriteFileSync(ファイルのパス, 書き込む中身);
+      const filePass = 'src/public/images/testDirectory/' + photo.menu + '.jpg';
+      fs.writeFileSync(filePass, 'バイナリで送られてきたbody');
       res.status(result.statusCode!).json(result.value);
     });
 

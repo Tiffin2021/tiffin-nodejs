@@ -1,3 +1,6 @@
+import { FileHandle } from 'fs/promises';
+import { FieldDef } from 'pg';
+
 export type Photo = {
   id: number;
   pass: string;
