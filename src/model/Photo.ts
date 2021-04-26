@@ -10,4 +10,5 @@ export type Photo = {
   opentime: number;
   closetime: number;
   shop_info_id: number;
+  base64Image?: string;
 };

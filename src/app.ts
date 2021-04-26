@@ -2,8 +2,6 @@
 import express from 'express';
 import { AddressInfo } from 'net';
 import cors from 'cors';
-import bodyParser from 'body-parser';
-import { Client } from 'pg';
 import { ShopAccountRepository } from './repository/ShopAccountRepository';
 import { ShopAccountService } from './service/ShopAccountService';
 import { ShopAccountController } from './controller/ShopAccountController';
@@ -37,24 +35,9 @@ const server = app.listen(4000, () => {
 
 //expressの設定(cors method header 許可の設定)
 app.disable('x-powered-by');
-app.use(cors()).use(bodyParser.json());
+app.use(cors()).use(express.json());
 
 const db = new Database();
-
-// // postgres 接続情報
-// const connection = new Client({
-//   host: '',
-//   port: 5432,
-//   user: 'user',
-//   password: 'password',
-//   database: 'tiffin',
-// });
-
-// // postgresに接続
-// connection
-//   .connect()
-//   .then(() => console.log('postgres connect success!'))
-//   .catch((err) => console.log(err));
 
 // staticにアクセスできるディレクトリ
 app.use(express.static(__dirname + '/public'));
