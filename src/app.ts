@@ -24,18 +24,19 @@ import { PhotoRepository } from './repository/PhotoRepository';
 import { PhotoService } from './service/PhotoService';
 import { PhotoController } from './controller/PhotoController';
 
-//定義
+// 定義
 const app = express();
 
-//expressで4000ポートにサーバー起動
+// expressで4000ポートにサーバー起動
 const server = app.listen(4000, () => {
   const address = server.address() as AddressInfo;
   console.log(`Node.js is listening to PORT: ${address.port}`);
 });
 
-//expressの設定(cors method header 許可の設定)
+// expressの設定(cors method header 許可の設定)
 app.disable('x-powered-by');
-app.use(cors()).use(express.json());
+// jsonでのPOST時に最大10MBまで許容する
+app.use(cors()).use(express.json({ limit: '10mb' }));
 
 const db = new Database();
 

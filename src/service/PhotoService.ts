@@ -4,6 +4,8 @@ import { IPhotoService } from './interfaces/IPhotoService';
 import { HttpStatusCode } from '../utils/http/HttpStatusCode';
 import { DatabaseErrorMessages } from '../utils/database';
 import { Result } from '../utils/types/Result';
+import { Buffer } from 'buffer';
+import * as fs from 'fs';
 
 export class PhotoService implements IPhotoService {
   private repository: IPhotoRepository;
@@ -109,26 +111,66 @@ export class PhotoService implements IPhotoService {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result<number> = {};
 
+    // TODO: 画像データの箇所のテストのために、データ登録は一旦コメントアウトしておく
+
+    //#region Photoデータ登録処理
+
     // 画像を作成する
-    const createdResult = await this.repository.create(photo);
+    // const createdResult = await this.repository.create(photo);
 
-    // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
-    if (createdResult.error != null) {
-      result.statusCode = HttpStatusCode.InternalServerError;
-      result.error = createdResult.error;
+    // // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
+    // if (createdResult.error != null) {
+    //   result.statusCode = HttpStatusCode.InternalServerError;
+    //   result.error = createdResult.error;
+    //   console.log(result.error);
+    //   return result;
+    // }
+    // // エラーは出てないが、中身がnullの場合、500エラーコードとエラー内容を返却
+    // if (createdResult.value == null) {
+    //   result.statusCode = HttpStatusCode.InternalServerError;
+    //   result.error = new Error('画像IDの取得に失敗しました。');
+    //   console.log(result.error);
+    //   return result;
+    // }
+
+    //#endregion
+
+    // base64が設定されていない場合、エラー
+    if (photo.base64Image == null) {
+      result.statusCode = HttpStatusCode.BadRequest;
+      result.error = new Error('画像データが取得できませんでした。');
       console.log(result.error);
       return result;
     }
-    // エラーは出てないが、中身がnullの場合、500エラーコードとエラー内容を返却
-    if (createdResult.value == null) {
-      result.statusCode = HttpStatusCode.InternalServerError;
-      result.error = new Error('画像IDの取得に失敗しました。');
-      console.log(result.error);
-      return result;
-    }
 
-    // 作成後IDを返却
-    result.value = createdResult.value;
+    // Base64文字列
+    const base64 = photo.base64Image;
+
+    // Base64からファイルの中身を取り出す
+    const fileData = base64.replace(/^data:\w+\/\w+;base64,/, '');
+
+    // Base64をデコードしファイルの実体をメモリに確保する（バッファする）
+    const decodedFile = Buffer.from(fileData, 'base64');
+
+    // 拡張子を取得
+    const extension = base64.toString().slice(base64.indexOf('/') + 1, base64.indexOf(';'));
+
+    // 現在日時(UnixTime)をファイル名にする
+    const now = Date.now().toString();
+
+    // src/public/imagesに画像データを書き込む
+    fs.writeFile(`src/public/images/${now}.${extension}`, decodedFile, (err) => {
+      // ファイル書き込みに失敗した場合、エラー
+      if (err) {
+        result.statusCode = HttpStatusCode.InternalServerError;
+        result.error = new Error('画像データのアップロードに失敗しました。');
+        console.log(result.error);
+        return result;
+      }
+    });
+
+    // 作成後IDを返却()
+    result.value = 999;
     result.statusCode = HttpStatusCode.Created;
     return result;
   }
