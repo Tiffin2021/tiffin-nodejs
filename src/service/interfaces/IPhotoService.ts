@@ -8,7 +8,7 @@ export interface IPhotoService {
 
   getByID(id: number): Promise<Result<Photo>>;
 
-  create(photo: Photo): Promise<Result<number>>;
+  create(photo: Photo, shopAccountId: number): Promise<Result<number>>;
 
   update(id: number, photo: Photo): Promise<Result<Photo>>;
 

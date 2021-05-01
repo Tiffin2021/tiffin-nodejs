@@ -39,13 +39,19 @@ export class PhotoController {
       res.status(result.statusCode!).json(result.value);
     });
 
-    this.router.post('/photos', async (req: Request, res: Response) => {
+    this.router.post('/photos/:shopAccountId', async (req: Request, res: Response) => {
+      const shopAccountId = parseInt(req.params.shopAccountId); // shopAccountId
       const photo = req.body as Photo;
-      const result = await this.service.create(photo);
+      // 画像を追加する処理
+
+      // DBへ登録するパスをどこで処理するか
+      photo.pass = 'http://localhost:4000/images/testDirectory/test.jpg';
+      const result = await this.service.create(photo, shopAccountId);
       if (result.error != null) {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
+
       res.status(result.statusCode!).json(result.value);
     });
 

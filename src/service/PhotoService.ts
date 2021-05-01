@@ -4,12 +4,15 @@ import { IPhotoService } from './interfaces/IPhotoService';
 import { HttpStatusCode } from '../utils/http/HttpStatusCode';
 import { DatabaseErrorMessages } from '../utils/database';
 import { Result } from '../utils/types/Result';
+import { IShopInfoRepository } from '../repository/interfaces/IShopInfoRepository';
 
 export class PhotoService implements IPhotoService {
-  private repository: IPhotoRepository;
+  private photoRepository: IPhotoRepository;
+  private shopInfoRepository: IShopInfoRepository;
 
-  constructor(repository: IPhotoRepository) {
-    this.repository = repository;
+  constructor(photoRepository: IPhotoRepository, shopInfoRepository: IShopInfoRepository) {
+    this.photoRepository = photoRepository; // 右側の変数はconstructorの変数
+    this.shopInfoRepository = shopInfoRepository;
   }
 
   async getAll(): Promise<Result<Photo[]>> {
@@ -17,7 +20,7 @@ export class PhotoService implements IPhotoService {
     const result: Result<Photo[]> = {};
 
     // 画像を取得する
-    const getAllResult = await this.repository.getAll();
+    const getAllResult = await this.photoRepository.getAll();
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
     if (getAllResult.error != null) {
@@ -46,7 +49,7 @@ export class PhotoService implements IPhotoService {
     const result: Result<Photo[]> = {};
 
     // 店舗ごとの画像一覧を取得する
-    const getAllResult = await this.repository.getByShopInfoID(shopInfoID);
+    const getAllResult = await this.photoRepository.getByShopInfoID(shopInfoID);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
     if (getAllResult.error != null) {
@@ -74,7 +77,7 @@ export class PhotoService implements IPhotoService {
     const result: Result<Photo> = {};
 
     // 画像を取得する
-    const getByIDResult = await this.repository.getByID(id);
+    const getByIDResult = await this.photoRepository.getByID(id);
 
     // Repositoryでエラーがあった場合
     if (getByIDResult.error != null) {
@@ -105,12 +108,23 @@ export class PhotoService implements IPhotoService {
     return result;
   }
 
-  async create(photo: Photo): Promise<Result<number>> {
+  async create(photo: Photo, shopAccountId: number): Promise<Result<number>> {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result<number> = {};
 
-    // 画像を作成する
-    const createdResult = await this.repository.create(photo);
+    //shopinfoから店舗情報を取得する(引数:shopAccountId)
+    const shopInfo = await (await this.shopInfoRepository.getByID(shopAccountId)).value!; // !をつけることによってundefinedを消せる(強制変換, バグの温床?)
+
+    //photoに取得したshopInfoを代入する
+    photo.shop_info_id = shopInfo.id;
+    photo.prefecture = shopInfo.prefecture;
+    photo.area = shopInfo.area;
+    photo.station = shopInfo.station;
+    photo.opentime = shopInfo.opentime;
+    photo.closetime = shopInfo.closetime;
+
+    // 画像を追加する
+    const createdResult = await this.photoRepository.create(photo);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
     if (createdResult.error != null) {
@@ -138,7 +152,7 @@ export class PhotoService implements IPhotoService {
     const result: Result<Photo> = {};
 
     // 画像を更新する
-    const photos = await this.repository.update(id, photo);
+    const photos = await this.photoRepository.update(id, photo);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
     if (photos.error != null) {
@@ -159,7 +173,7 @@ export class PhotoService implements IPhotoService {
     const result: Result = {};
 
     // 画像を削除する
-    const deleteResult = await this.repository.delete(id);
+    const deleteResult = await this.photoRepository.delete(id);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
     if (deleteResult.error != null) {
