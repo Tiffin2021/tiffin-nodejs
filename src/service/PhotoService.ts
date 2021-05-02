@@ -6,6 +6,8 @@ import { DatabaseErrorMessages } from '../utils/database';
 import { Result } from '../utils/types/Result';
 import { IShopInfoRepository } from '../repository/interfaces/IShopInfoRepository';
 import { ShopInfoRepository } from '../repository/ShopInfoRepository';
+import { dataImgPath, uploadImgPath } from '../utils/const/baseURL';
+import fs from 'fs';
 
 export class PhotoService implements IPhotoService {
   private photoRepository: IPhotoRepository;
@@ -112,6 +114,17 @@ export class PhotoService implements IPhotoService {
   async create(shopAccountId: number, photo: Photo): Promise<Result<number>> {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result<number> = {};
+    //ここで画像ファイルのパスを決定しておく必要がある現在の値は(仮)
+    photo.pass = dataImgPath + 'test.jpg';
+    // 余分な部分を削る
+    const imgDataString = photo.img.replace(/^data:\w+\/\w+;base64,/, '');
+    // base64 デコード
+    const img = Buffer.from(imgDataString, 'base64');
+    // サーバーに保存する
+    fs.writeFile(uploadImgPath + 'test.jpg', img, (err) => {
+      if (err) throw err;
+      console.log('正常に書き込みが完了しました');
+    });
 
     // 店舗情報を1件取得する(現在の使用ではアカウントに対して店舗情報が1件取得でいるはずなので、、、)
     const shopInfoResult = await this.shopInfoRepository.getByID(shopAccountId);
@@ -138,8 +151,8 @@ export class PhotoService implements IPhotoService {
     photo.prefecture = shopInfo.prefecture;
     photo.area = shopInfo.area;
     photo.station = shopInfo.station;
-    photo.opentime = shopInfo.opentime
-    photo.closetime = shopInfo.closetime
+    photo.opentime = shopInfo.opentime;
+    photo.closetime = shopInfo.closetime;
     photo.shop_info_id = shopInfo.id;
 
     // 画像を追加する

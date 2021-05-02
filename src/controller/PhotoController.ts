@@ -1,7 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { Photo } from '../model/Photo';
 import { IPhotoService } from '../service/interfaces/IPhotoService';
-import * as fs from 'fs';
 
 export class PhotoController {
   public router: Router;
@@ -43,17 +42,12 @@ export class PhotoController {
     this.router.post('/photos/:id', async (req: Request, res: Response) => {
       const id = parseInt(req.params.id);
       const photo = req.body as Photo;
-      //ここで画像ファイルのパスを決定しておく必要がある現在の値は(仮)
-      photo.pass = 'http://localhost:4000/images/testDirectory/a.txt';
       const result = await this.service.create(id, photo);
       if (result.error != null) {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
-      console.log(photo.img);
-      //ファイルの書き込みwriteFileSync(ファイルのパス, 書き込む中身);
-      // fs.writeFileSync(photo.pass, '1');
-      // res.status(result.statusCode!).json(result.value);
+      res.status(result.statusCode!).json(result.value);
     });
 
     this.router.put('/photos/:id', async (req: Request, res: Response) => {
