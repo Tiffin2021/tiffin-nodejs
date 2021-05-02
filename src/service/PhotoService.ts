@@ -4,6 +4,7 @@ import { IPhotoService } from './interfaces/IPhotoService';
 import { HttpStatusCode } from '../utils/http/HttpStatusCode';
 import { DatabaseErrorMessages } from '../utils/database';
 import { Result } from '../utils/types/Result';
+import * as fs from 'fs';
 
 export class PhotoService implements IPhotoService {
   private repository: IPhotoRepository;
@@ -108,6 +109,36 @@ export class PhotoService implements IPhotoService {
   async create(photo: Photo): Promise<Result<number>> {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result<number> = {};
+
+    // エンコードデータがNULLならエラー。
+    const encodedData = photo.imgBase64;
+    if (encodedData == null) {
+      result.statusCode = HttpStatusCode.NoContent;
+      result.error = new Error('画像がありません。');
+      console.log(result.error);
+      return result;
+    }
+
+    // エンコードデータからbase64を取り除く。
+    const fileData = encodedData.replace(/^data:\w+\/\w+;base64,/, '');
+
+    // base64の（image/ 以降）実態を取り出し、バッファする。
+    // 書き込むデータイメージ
+    // const decodedFile = Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72]);
+    const decodedFile = Buffer.from(fileData, 'base64');
+    console.log(decodedFile);
+
+    // path作成
+    const path = `src/public/images/file${photo.shop_info_id}.jpeg`;
+
+    // ファイルに書き込み
+    fs.writeFile(path, decodedFile, (err) => {
+      if (err) throw err;
+      console.log('正常に書き込みが完了しました');
+    });
+
+    // pathを格納
+    photo.pass = path;
 
     // 画像を作成する
     const createdResult = await this.repository.create(photo);
