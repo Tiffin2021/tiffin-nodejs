@@ -48,7 +48,7 @@ export class PhotoService implements IPhotoService {
   }
 
   async getByShopAccountID(shopAccountID: number): Promise<Result<Photo[]>> {
-    // Controllerに返却するための結果オブジェクトを生成
+    // Controllerに返却するための結果オブジェトを生成
     const result: Result<Photo[]> = {};
 
     //shopAccountIdからshopInfoを取得する
