@@ -19,9 +19,9 @@ export class PhotoController {
       res.status(result.statusCode!).json(result.value);
     });
 
-    this.router.get('/photos/shopInfoID/:id', async (req: Request, res: Response) => {
-      const id = parseInt(req.params.id);
-      const result = await this.service.getByShopInfoID(id);
+    this.router.get('/photos/shopAccountId/:shopAccountId', async (req: Request, res: Response) => {
+      const shopAccountId = parseInt(req.params.shopAccountId);
+      const result = await this.service.getByShopAccountID(shopAccountId);
       if (result.error != null) {
         res.status(result.statusCode!).json(result.error.message);
         return;

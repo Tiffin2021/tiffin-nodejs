@@ -47,12 +47,31 @@ export class PhotoService implements IPhotoService {
     return result;
   }
 
-  async getByShopInfoID(shopInfoID: number): Promise<Result<Photo[]>> {
+  async getByShopAccountID(shopAccountID: number): Promise<Result<Photo[]>> {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result<Photo[]> = {};
 
+    //shopAccountIdからshopInfoを取得する
+    const shopInfoResult = await this.shopInfoRepository.getByID(shopAccountID);
+
+    // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
+    if (shopInfoResult.error != null) {
+      result.statusCode = HttpStatusCode.InternalServerError;
+      result.error = shopInfoResult.error;
+      console.log(result.error);
+      return result;
+    }
+    // エラーは出てないが、中身がnullの場合、500エラーコードとエラー内容を返却
+    if (shopInfoResult.value == null) {
+      result.statusCode = HttpStatusCode.InternalServerError;
+      result.error = new Error('画像の取得に失敗しました。');
+      console.log(result.error);
+      return result;
+    }
+
     // 店舗ごとの画像一覧を取得する
-    const getAllResult = await this.photoRepository.getByShopInfoID(shopInfoID);
+    const shopInfoId = shopInfoResult.value.id;
+    const getAllResult = await this.photoRepository.getByShopInfoID(shopInfoId);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
     if (getAllResult.error != null) {

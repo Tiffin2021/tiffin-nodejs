@@ -4,7 +4,7 @@ import { Result } from '../../utils/types/Result';
 export interface IPhotoService {
   getAll(): Promise<Result<Photo[]>>;
 
-  getByShopInfoID(shopInfoID: number): Promise<Result<Photo[]>>;
+  getByShopAccountID(shopInfoID: number): Promise<Result<Photo[]>>;
 
   getByID(id: number): Promise<Result<Photo>>;
 
