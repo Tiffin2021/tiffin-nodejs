@@ -8,6 +8,7 @@ import { IShopInfoRepository } from '../repository/interfaces/IShopInfoRepositor
 import { ShopInfoRepository } from '../repository/ShopInfoRepository';
 import { dataImgPath, uploadImgPath } from '../utils/const/baseURL';
 import fs from 'fs';
+import { fileURLToPath } from 'node:url';
 
 export class PhotoService implements IPhotoService {
   private photoRepository: IPhotoRepository;
@@ -230,7 +231,34 @@ export class PhotoService implements IPhotoService {
     // Controllerに返却するための結果オブジェクトを生成
     const result: Result = {};
 
-    // 画像を削除する
+    const photoResult = await this.photoRepository.getByID(id);
+
+    // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
+    if (photoResult.error != null) {
+      result.statusCode = HttpStatusCode.InternalServerError;
+      result.error = photoResult.error;
+      console.log(result.error);
+      return result;
+    }
+    // エラーは出てないが、中身がnullの場合、500エラーコードとエラー内容を返却
+    if (photoResult.value == null) {
+      result.statusCode = HttpStatusCode.InternalServerError;
+      result.error = new Error('画像の取得に失敗しました。');
+      console.log(result.error);
+      return result;
+    }
+    const photo = photoResult.value;
+
+    //実際の画像の削除処理
+    const UrlPath = photo.pass;
+    const folderPath = UrlPath.replace(dataImgPath, uploadImgPath);
+
+    fs.unlink(folderPath, (err) => {
+      if (err) throw err;
+      console.log('path/file.txt was deleted');
+    });
+
+    // 画像情報を削除する
     const deleteResult = await this.photoRepository.delete(id);
 
     // Repositoryでエラーがあった場合、500エラーコードとエラー内容を返却
