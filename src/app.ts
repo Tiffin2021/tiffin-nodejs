@@ -28,6 +28,8 @@ import { PhotoController } from './controller/PhotoController';
 
 //定義
 const app = express();
+// jsonでのPOST時に最大10MBまで許容する
+app.use(cors()).use(express.json({ limit: '10mb' }));
 
 //expressで4000ポートにサーバー起動
 const server = app.listen(4000, () => {
@@ -73,7 +75,7 @@ app.use('/api/', shopInfoController.router);
 
 //画像テーブルの操作
 const photoRepository = new PhotoRepository(db);
-const photoService = new PhotoService(photoRepository);
+const photoService = new PhotoService(photoRepository, shopInfoRepository);
 const photoController = new PhotoController(photoService);
 app.use('/api/', photoController.router);
 
