@@ -118,17 +118,21 @@ export class PhotoService implements IPhotoService {
     const extension = photo.img
       .toString()
       .slice(photo.img.indexOf('/') + 1, photo.img.indexOf(';'));
+
+    // 現在日時(UnixTime)をファイル名にする
+    const now = Date.now().toString();
+
     // 余分な部分を削る
     const imgDataString = photo.img.replace(/^data:\w+\/\w+;base64,/, '');
     // base64 デコード
     const img = Buffer.from(imgDataString, 'base64');
     // サーバーに保存する
-    fs.writeFile(`${uploadImgPath}test.${extension}`, img, (err) => {
+    fs.writeFile(`${uploadImgPath}${now}.${extension}`, img, (err) => {
       if (err) throw err;
       console.log('正常に書き込みが完了しました');
     });
     //ここで画像ファイルのパスを決定しておく必要がある現在の値は(仮)
-    photo.pass = `${dataImgPath}test.${extension}`;
+    photo.pass = `${dataImgPath}${now}.${extension}`;
     // 店舗情報を1件取得する(現在の使用ではアカウントに対して店舗情報が1件取得でいるはずなので、、、)
     const shopInfoResult = await this.shopInfoRepository.getByID(shopAccountId);
 
