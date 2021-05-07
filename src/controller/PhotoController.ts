@@ -10,6 +10,7 @@ export class PhotoController {
     this.router = Router();
     this.service = service;
 
+    //写真の全件取得
     this.router.get('/photos', async (req: Request, res: Response) => {
       const result = await this.service.getAll();
       if (result.error != null) {
@@ -19,9 +20,10 @@ export class PhotoController {
       res.status(result.statusCode!).json(result.value);
     });
 
-    this.router.get('/photos/shopInfoID/:id', async (req: Request, res: Response) => {
-      const id = parseInt(req.params.id);
-      const result = await this.service.getByShopInfoID(id);
+    //店舗アカウント→店舗情報に紐づく写真の全件取得
+    this.router.get('/photos/shopAccountId/:shopAccountId', async (req: Request, res: Response) => {
+      const shopAccountId = parseInt(req.params.shopAccountId);
+      const result = await this.service.getByShopAccountID(shopAccountId);
       if (result.error != null) {
         res.status(result.statusCode!).json(result.error.message);
         return;
@@ -29,6 +31,7 @@ export class PhotoController {
       res.status(result.statusCode!).json(result.value);
     });
 
+    //写真の一件取得
     this.router.get('/photos/id/:id', async (req: Request, res: Response) => {
       const id = parseInt(req.params.id);
       const result = await this.service.getByID(id);
@@ -39,14 +42,11 @@ export class PhotoController {
       res.status(result.statusCode!).json(result.value);
     });
 
-    this.router.post('/photos/:shopAccountId', async (req: Request, res: Response) => {
-      const shopAccountId = parseInt(req.params.shopAccountId); // shopAccountId
+    //写真の追加
+    this.router.post('/photos/:id', async (req: Request, res: Response) => {
+      const id = parseInt(req.params.id);
       const photo = req.body as Photo;
-      // 画像を追加する処理
-
-      // DBへ登録するパスをどこで処理するか
-      photo.pass = 'http://localhost:4000/images/testDirectory/test.jpg'; // 処理は全部serviceに
-      const result = await this.service.create(photo, shopAccountId);
+      const result = await this.service.create(id, photo);
       if (result.error != null) {
         res.status(result.statusCode!).json(result.error.message);
         return;
@@ -57,17 +57,19 @@ export class PhotoController {
       res.status(result.statusCode!).json(result.value);
     });
 
+    //写真情報の変更(今回は実装しない)
     this.router.put('/photos/:id', async (req: Request, res: Response) => {
-      const id = parseInt(req.params.id);
-      const photo = req.body as Photo;
-      const result = await this.service.update(id, photo);
-      if (result.error != null) {
-        res.status(result.statusCode!).json(result.error.message);
-        return;
-      }
-      res.status(result.statusCode!).send();
+      // const id = parseInt(req.params.id);
+      // const photo = req.body as Photo;
+      // const result = await this.service.update(id, photo);
+      // if (result.error != null) {
+      //   res.status(result.statusCode!).json(result.error.message);
+      //   return;
+      // }
+      // res.status(result.statusCode!).send();
     });
 
+    //写真の削除
     this.router.delete('/photos/:id', async (req: Request, res: Response) => {
       const id = parseInt(req.params.id);
       const result = await this.service.delete(id);
