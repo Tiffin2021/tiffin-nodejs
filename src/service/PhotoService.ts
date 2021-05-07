@@ -152,7 +152,7 @@ export class PhotoService implements IPhotoService {
       console.log('正常に書き込みが完了しました');
     });
     //ここで画像ファイルのパスを決定しておく必要がある現在の値は(仮)
-    photo.pass = `${dataImgPath}${now}.${extension}`;
+    photo.path = `${dataImgPath}${now}.${extension}`;
     // 店舗情報を1件取得する(現在の使用ではアカウントに対して店舗情報が1件取得でいるはずなので、、、)
     const shopInfoResult = await this.shopInfoRepository.getByID(shopAccountId);
 
@@ -250,7 +250,7 @@ export class PhotoService implements IPhotoService {
     const photo = photoResult.value;
 
     //実際の画像の削除処理
-    const UrlPath = photo.pass;
+    const UrlPath = photo.path;
     const folderPath = UrlPath.replace(dataImgPath, uploadImgPath);
 
     fs.unlink(folderPath, (err) => {
