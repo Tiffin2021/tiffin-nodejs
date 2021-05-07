@@ -45,12 +45,14 @@ export class PhotoController {
       // 画像を追加する処理
 
       // DBへ登録するパスをどこで処理するか
-      photo.pass = 'http://localhost:4000/images/testDirectory/test.jpg';
+      photo.pass = 'http://localhost:4000/images/testDirectory/test.jpg'; // 処理は全部serviceに
       const result = await this.service.create(photo, shopAccountId);
       if (result.error != null) {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
+
+      // const img
 
       res.status(result.statusCode!).json(result.value);
     });

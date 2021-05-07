@@ -115,6 +115,8 @@ export class PhotoService implements IPhotoService {
     //shopinfoから店舗情報を取得する(引数:shopAccountId)
     const shopInfo = await (await this.shopInfoRepository.getByID(shopAccountId)).value!; // !をつけることによってundefinedを消せる(強制変換, バグの温床?)
 
+    // if
+
     //photoに取得したshopInfoを代入する
     photo.shop_info_id = shopInfo.id;
     photo.prefecture = shopInfo.prefecture;
