@@ -81,13 +81,13 @@ export class PhotoRepository implements IPhotoRepository {
     const query = {
       text: `
         INSERT INTO 
-          photos (pass, genre, prefecture, area, station, price, menu, opentime, closetime, shop_info_id) 
+          photos (path, genre, prefecture, area, station, price, menu, opentime, closetime, shop_info_id) 
         VALUES 
           ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         RETURNING id
       `,
       values: [
-        photo.pass,
+        photo.path,
         photo.genre,
         photo.prefecture,
         photo.area,
@@ -115,12 +115,12 @@ export class PhotoRepository implements IPhotoRepository {
         UPDATE 
           photos
         SET 
-          pass = $1, genre = $2, prefecture = $3, area = $4, station = $5, price = $6, menu = $7, opentime = $8, closetime = $9, shop_info_id = $10
+          path = $1, genre = $2, prefecture = $3, area = $4, station = $5, price = $6, menu = $7, opentime = $8, closetime = $9, shop_info_id = $10
         WHERE
           id = $11
       `,
       values: [
-        photo.pass,
+        photo.path,
         photo.genre,
         photo.prefecture,
         photo.area,

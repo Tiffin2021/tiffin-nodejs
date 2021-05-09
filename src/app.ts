@@ -37,9 +37,10 @@ const server = app.listen(4000, () => {
   console.log(`Node.js is listening to PORT: ${address.port}`);
 });
 
-//expressの設定(cors method header 許可の設定)
+// expressの設定(cors method header 許可の設定)
 app.disable('x-powered-by');
-app.use(cors()).use(bodyParser.json());
+// jsonでのPOST時に最大10MBまで許容する
+app.use(cors()).use(express.json({ limit: '10mb' })); // マックス10mb
 
 const db = new Database();
 

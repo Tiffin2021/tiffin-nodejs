@@ -3,7 +3,7 @@ import { FieldDef } from 'pg';
 
 export type Photo = {
   id: number;
-  pass: string;
+  path: string;
   genre: string;
   prefecture: string;
   area: string;

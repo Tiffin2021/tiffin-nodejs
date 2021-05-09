@@ -128,7 +128,7 @@ INSERT INTO genres (genre) VALUES
 
 CREATE TABLE photos (
   id SERIAL NOT NULL,
-  pass varchar(100) NOT NULL,
+  path varchar(100) NOT NULL,
   genre varchar(50) NOT NULL,
   prefecture varchar(50) NOT NULL,
   area varchar(50) NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE photos (
   PRIMARY KEY (id)
 );
 
-INSERT INTO photos (pass, genre, prefecture, area, station, price, menu, opentime, closetime, shop_info_id) VALUES
+INSERT INTO photos (path, genre, prefecture, area, station, price, menu, opentime, closetime, shop_info_id) VALUES
 ('http://localhost:4000/images/testDirectory/1.jpg', '和食', '東京都', '新宿・代々木・大久保', '新宿', 550, '鯖の味噌煮定食', 1130, 1400, 1),
 ('http://localhost:4000/images/testDirectory/2.jpg', '和食', '東京都', '新宿・代々木・大久保', '大久保', 1000, '寿司', 1130, 1400, 1),
 ('http://localhost:4000/images/testDirectory/3.jpg', '和食', '北海道', '札幌市', '札幌', 750, '豚の角煮定食', 1130, 1400, 1),

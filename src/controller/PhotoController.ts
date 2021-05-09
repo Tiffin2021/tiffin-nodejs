@@ -51,6 +51,9 @@ export class PhotoController {
         res.status(result.statusCode!).json(result.error.message);
         return;
       }
+
+      // const img
+
       res.status(result.statusCode!).json(result.value);
     });
 
