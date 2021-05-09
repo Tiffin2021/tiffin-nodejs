@@ -15,6 +15,7 @@ type DBConfig = {
   user: string;
   password: string;
   database: string;
+  ssl: boolean;
 };
 
 export class Database {
@@ -27,6 +28,7 @@ export class Database {
       user: process.env.ENV_USER!,
       port: parseInt(process.env.ENV_PORT!),
       password: process.env.ENV_PASSWORD!,
+      ssl: true,
     };
     this.connection = new Client(config);
     this.connection
