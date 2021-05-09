@@ -9,32 +9,65 @@ export type DatabaseResult<T extends any = null> = {
   error?: Error;
 };
 
-type DBConfig = {
+type DBConfig_Local = {
   host: string;
   port: number;
   user: string;
   password: string;
   database: string;
-  ssl: boolean;
 };
 
+type DBConfig_Production = {
+  connectionString: string;
+  ssl: boolean;
+};
 export class Database {
   private connection: Client;
 
   constructor() {
-    const config: DBConfig = {
+    // 実行環境に合わせてデータベース設定を変更
+    switch (process.env.ENV_ENVIRONMENT!) {
+      case 'LOCAL':
+        this.connection = new Client(this.createLocalDBConfig());
+        break;
+      case 'PRODUCTION':
+        this.connection = new Client(this.createProductionDBConfig());
+        break;
+      // どれにも属さない場合、ローカル環境の設定にする
+      default:
+        this.connection = new Client(this.createLocalDBConfig());
+        break;
+    }
+
+    this.connection
+      .connect()
+      .then(() => console.log('postgres connect success!'))
+      .catch((err) => console.log(err));
+  }
+
+  /**
+   * ローカル環境用のDB設定を作成する
+   * @returns DBConfig_Local
+   */
+  private createLocalDBConfig(): DBConfig_Local {
+    return {
       host: process.env.ENV_HOST!,
       database: process.env.ENV_DB!,
       user: process.env.ENV_USER!,
       port: parseInt(process.env.ENV_PORT!),
       password: process.env.ENV_PASSWORD!,
+    } as DBConfig_Local;
+  }
+
+  /**
+   * 本番環境用のDB設定を作成する
+   * @returns DBConfig_Production
+   */
+  private createProductionDBConfig(): DBConfig_Production {
+    return {
+      connectionString: process.env.DATABASE_URL!,
       ssl: true,
-    };
-    this.connection = new Client(config);
-    this.connection
-      .connect()
-      .then(() => console.log('postgres connect success!'))
-      .catch((err) => console.log(err));
+    } as DBConfig_Production;
   }
 
   public async transaction() {
