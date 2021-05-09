@@ -64,6 +64,7 @@ export class Database {
    * @returns DBConfig_Production
    */
   private createProductionDBConfig(): DBConfig_Production {
+    console.log(process.env.DATABASE_URL!);
     return {
       connectionString: process.env.DATABASE_URL!,
       ssl: true,
