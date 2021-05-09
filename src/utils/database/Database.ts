@@ -1,5 +1,8 @@
 import { Client, QueryConfig } from 'pg';
 import { DatabaseErrorMessages } from '../database';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export type DatabaseResult<T extends any = null> = {
   value?: T;
@@ -18,13 +21,12 @@ export class Database {
   private connection: Client;
 
   constructor() {
-    // TODO: 環境変数から読み込むようにする
     const config: DBConfig = {
-      host: '',
-      port: 5432,
-      user: 'user',
-      password: 'password',
-      database: 'tiffin',
+      host: process.env.ENV_HOST!,
+      database: process.env.ENV_DB!,
+      user: process.env.ENV_USER!,
+      port: parseInt(process.env.ENV_PORT!),
+      password: process.env.ENV_PASSWORD!,
     };
     this.connection = new Client(config);
     this.connection
