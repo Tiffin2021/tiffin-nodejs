@@ -1,8 +1,9 @@
-import { Client, QueryConfig } from 'pg';
+import pg, { Client, QueryConfig } from 'pg';
 import { DatabaseErrorMessages } from '../database';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
+pg.defaults.ssl = true;
 
 export type DatabaseResult<T extends any = null> = {
   value?: T;
