@@ -19,8 +19,12 @@ type DBConfig_Local = {
 
 type DBConfig_Production = {
   connectionString: string;
-  ssl: boolean;
+  ssl: {
+    sslmode: 'require';
+    rejectUnauthorized: false;
+  };
 };
+
 export class Database {
   private connection: Client;
 
@@ -67,7 +71,6 @@ export class Database {
     console.log(process.env.DATABASE_URL!);
     return {
       connectionString: process.env.DATABASE_URL!,
-      ssl: true,
     } as DBConfig_Production;
   }
 
