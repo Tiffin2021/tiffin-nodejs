@@ -1,9 +1,9 @@
-import pg, { Client, QueryConfig } from 'pg';
+// import pg, { Client, QueryConfig } from 'pg';
+import { Pool, Client, QueryConfig } from 'pg';
 import { DatabaseErrorMessages } from '../database';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
-pg.defaults.ssl = true;
 
 export type DatabaseResult<T extends any = null> = {
   value?: T;
@@ -20,27 +20,24 @@ type DBConfig_Local = {
 
 type DBConfig_Production = {
   connectionString: string;
-  ssl: {
-    sslmode: 'require';
-    rejectUnauthorized: false;
-  };
+  ssl: boolean;
 };
 
 export class Database {
-  private connection: Client;
+  private connection: Pool;
 
   constructor() {
     // 実行環境に合わせてデータベース設定を変更
     switch (process.env.ENV_ENVIRONMENT!) {
       case 'LOCAL':
-        this.connection = new Client(this.createLocalDBConfig());
+        this.connection = new Pool(this.createLocalDBConfig());
         break;
       case 'PRODUCTION':
-        this.connection = new Client(this.createProductionDBConfig());
+        this.connection = new Pool(this.createProductionDBConfig());
         break;
       // どれにも属さない場合、ローカル環境の設定にする
       default:
-        this.connection = new Client(this.createLocalDBConfig());
+        this.connection = new Pool(this.createLocalDBConfig());
         break;
     }
 
@@ -72,6 +69,7 @@ export class Database {
     console.log(process.env.DATABASE_URL!);
     return {
       connectionString: process.env.DATABASE_URL!,
+      ssl: true,
     } as DBConfig_Production;
   }
 
